@@ -126,6 +126,12 @@ body {
 }
 .btn-primary:hover { background: var(--red); transform: translateY(-2px); }
 
+/* ── Font Awesome Duotone theming ────────────────────────────────────────── */
+.fa-duotone { --fa-primary-color: var(--gold); --fa-secondary-color: var(--red); --fa-secondary-opacity: .4; }
+.card-icon .fa-duotone { --fa-primary-color: var(--red); --fa-secondary-color: var(--gold); --fa-secondary-opacity: .35; }
+.info-block .fa-duotone { --fa-primary-color: var(--gold); --fa-secondary-color: var(--cream); --fa-secondary-opacity: .25; }
+.footer-links .fa-duotone { --fa-primary-color: var(--cream); --fa-secondary-color: var(--gold); --fa-secondary-opacity: .5; }
+
 /* ── Hero underlines ─────────────────────────────────────────────────────── */
 .hero-underlines {
   display: block;
