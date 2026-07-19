@@ -40,7 +40,8 @@
 
       <!-- ── INK STAINS — all on edges ─────────────────────────────────────── -->
       <!-- top-left corner, bleeding off -->
-      <image href="ink1.png" x="-2%" y="200" width="140" opacity=".6"
+      <image href="ink1.png" x="-9%" y="160" width="140" opacity=".6"
+        transform="rotate(180, 70, 270)"
         filter="url(#drop)" style="mix-blend-mode:multiply"/>
 
       <!-- top-right edge -->
