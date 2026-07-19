@@ -50,16 +50,13 @@
       <circle  cx="7.5%" cy="1977" r="1" fill="#1c1710" opacity=".08"/>
 
       <!-- ── COFFEE RING ─ top right ───────────────────────────────────────── -->
-      <circle cx="91%" cy="260" r="48" fill="rgba(160,110,50,.06)" filter="url(#stain-blur)"/>
-      <circle cx="91%" cy="260" r="47" fill="none" stroke="#a07840" stroke-width="1.8" opacity=".11" filter="url(#stain-blur)"/>
-      <circle cx="91%" cy="260" r="45.5" fill="none" stroke="#a07840" stroke-width=".5" opacity=".07"/>
-      <!-- offset second ring -->
-      <circle cx="93.5%" cy="278" r="34" fill="none" stroke="#a07840" stroke-width="1.2" opacity=".09" filter="url(#stain-blur)"/>
+      <image href="coffee-stain.png" x="78%" y="120" width="220" opacity=".55"
+        style="mix-blend-mode:multiply"/>
 
-      <!-- ── COFFEE RING ─ lower left ──────────────────────────────────────── -->
-      <circle cx="7%" cy="1650" r="38" fill="rgba(140,90,40,.05)" filter="url(#stain-blur)"/>
-      <circle cx="7%" cy="1650" r="37" fill="none" stroke="#8b6030" stroke-width="1.4" opacity=".09" filter="url(#stain-blur)"/>
-      <circle cx="7%" cy="1650" r="35.5" fill="none" stroke="#8b6030" stroke-width=".4" opacity=".06"/>
+      <!-- ── COFFEE RING ─ lower left, rotated ────────────────────────────── -->
+      <image href="coffee-stain.png" x="-2%" y="1480" width="180" opacity=".40"
+        transform="rotate(-22, 80, 1570)"
+        style="mix-blend-mode:multiply"/>
 
       <!-- ── PENCIL MARGIN LINE ─────────────────────────────────────────────── -->
       <line x1="7.5%" y1="0" x2="7.2%" y2="100%"
