@@ -126,6 +126,19 @@ body {
 }
 .btn-primary:hover { background: var(--red); transform: translateY(-2px); }
 
+/* ── FA watermark decorations ────────────────────────────────────────────── */
+.fa-watermark {
+  position: absolute;
+  pointer-events: none;
+  color: var(--ink);
+  opacity: .045;
+  line-height: 1;
+  z-index: 0;
+  font-size: var(--wm-size, 220px);
+  transform: rotate(var(--wm-rot, -15deg));
+  user-select: none;
+}
+
 /* ── Font Awesome Duotone theming ────────────────────────────────────────── */
 .fa-duotone { --fa-primary-color: var(--gold); --fa-secondary-color: var(--red); --fa-secondary-opacity: .4; }
 .card-icon .fa-duotone { --fa-primary-color: var(--red); --fa-secondary-color: var(--gold); --fa-secondary-opacity: .35; }
