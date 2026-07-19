@@ -1,99 +1,81 @@
-// Inject static handcrafted paper details
+// Static paper decorations — ink drops, coffee rings, pencil marks
 (function () {
 
-  // ── 1. Paper texture overlay (SVG feTurbulence noise) ─────────────────────
-  const grain = document.querySelector('.paper-grain');
-  if (grain) {
-    grain.style.cssText += `
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: .18;
-      mix-blend-mode: multiply;
-    `;
-  }
+  // ── Full-page absolute decoration layer ───────────────────────────────────
+  const wrap = document.createElement('div');
+  wrap.id = 'paper-deco';
+  wrap.setAttribute('aria-hidden', 'true');
+  wrap.style.cssText = `
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0; overflow: hidden;
+  `;
+  // Make sure body is relative
+  document.body.style.position = 'relative';
 
-  // ── 2. SVG decoration layer ────────────────────────────────────────────────
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('id', 'paper-deco');
-  svg.setAttribute('aria-hidden', 'true');
-  svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-  svg.style.cssText = `
-    position: fixed; inset: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 0;
-    overflow: visible;
+  wrap.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg"
+         style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible"
+         aria-hidden="true">
+      <defs>
+        <filter id="ink-bleed" x="-30%" y="-30%" width="160%" height="160%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.035 0.06" numOctaves="3" seed="8" result="noise"/>
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="stain-blur">
+          <feGaussianBlur stdDeviation="7"/>
+        </filter>
+        <filter id="stain-blur-sm">
+          <feGaussianBlur stdDeviation="3.5"/>
+        </filter>
+      </defs>
+
+      <!-- ── INK DROPS ─ top-left cluster ─────────────────────────────────── -->
+      <ellipse cx="5.5%" cy="320" rx="7" ry="5" fill="#1c1710" opacity=".22" filter="url(#ink-bleed)"/>
+      <ellipse cx="6.2%" cy="328" rx="2.5" ry="1.8" fill="#1c1710" opacity=".16" filter="url(#ink-bleed)"/>
+      <circle  cx="4.3%" cy="315" r="1.2" fill="#1c1710" opacity=".13"/>
+      <circle  cx="7.1%" cy="312" r="0.8" fill="#1c1710" opacity=".10"/>
+      <circle  cx="4.8%" cy="334" r="0.6" fill="#1c1710" opacity=".09"/>
+
+      <!-- ── INK DROPS ─ right edge mid-page ──────────────────────────────── -->
+      <ellipse cx="97%" cy="780" rx="10" ry="7" fill="#1c1710" opacity=".17" filter="url(#ink-bleed)"/>
+      <ellipse cx="97.8%" cy="793" rx="3.5" ry="2.5" fill="#1c1710" opacity=".12" filter="url(#ink-bleed)"/>
+      <circle  cx="95.2%" cy="775" r="1.4" fill="#1c1710" opacity=".10"/>
+      <circle  cx="98.5%" cy="771" r="0.9" fill="#1c1710" opacity=".09"/>
+      <circle  cx="96.5%" cy="799" r="0.7" fill="#1c1710" opacity=".08"/>
+
+      <!-- ── INK DROPS ─ bottom-left scatter ──────────────────────────────── -->
+      <ellipse cx="9%" cy="1980" rx="5.5" ry="3.5" fill="#1c1710" opacity=".14" filter="url(#ink-bleed)"/>
+      <ellipse cx="9.8%" cy="1987" rx="2" ry="1.4" fill="#1c1710" opacity=".10"/>
+      <circle  cx="7.5%" cy="1977" r="1" fill="#1c1710" opacity=".08"/>
+
+      <!-- ── COFFEE RING ─ top right ───────────────────────────────────────── -->
+      <circle cx="91%" cy="260" r="48" fill="rgba(160,110,50,.06)" filter="url(#stain-blur)"/>
+      <circle cx="91%" cy="260" r="47" fill="none" stroke="#a07840" stroke-width="1.8" opacity=".11" filter="url(#stain-blur)"/>
+      <circle cx="91%" cy="260" r="45.5" fill="none" stroke="#a07840" stroke-width=".5" opacity=".07"/>
+      <!-- offset second ring -->
+      <circle cx="93.5%" cy="278" r="34" fill="none" stroke="#a07840" stroke-width="1.2" opacity=".09" filter="url(#stain-blur)"/>
+
+      <!-- ── COFFEE RING ─ lower left ──────────────────────────────────────── -->
+      <circle cx="7%" cy="1650" r="38" fill="rgba(140,90,40,.05)" filter="url(#stain-blur)"/>
+      <circle cx="7%" cy="1650" r="37" fill="none" stroke="#8b6030" stroke-width="1.4" opacity=".09" filter="url(#stain-blur)"/>
+      <circle cx="7%" cy="1650" r="35.5" fill="none" stroke="#8b6030" stroke-width=".4" opacity=".06"/>
+
+      <!-- ── PENCIL MARGIN LINE ─────────────────────────────────────────────── -->
+      <line x1="7.5%" y1="0" x2="7.2%" y2="100%"
+        stroke="#c4964a" stroke-width="0.5" opacity=".10"
+        stroke-dasharray="8 22"/>
+
+      <!-- ── SMALL PEN DOODLE ─ asterisk bottom-left ──────────────────────── -->
+      <g transform="translate(80, 2300)" opacity=".12" stroke="#1c1710" stroke-width="0.9" stroke-linecap="round">
+        <line x1="-5" y1="0" x2="5" y2="0"/>
+        <line x1="0" y1="-5" x2="0" y2="5"/>
+        <line x1="-3.5" y1="-3.5" x2="3.5" y2="3.5"/>
+        <line x1="3.5" y1="-3.5" x2="-3.5" y2="3.5"/>
+      </g>
+    </svg>
   `;
 
-  svg.innerHTML = `
-    <defs>
-      <!-- ink bleed filter -->
-      <filter id="ink" x="-20%" y="-20%" width="140%" height="140%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.04 0.07" numOctaves="3" seed="8" result="noise"/>
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
-      </filter>
-      <!-- soft blur for stain -->
-      <filter id="stain">
-        <feGaussianBlur stdDeviation="6"/>
-      </filter>
-    </defs>
-
-    <!-- ── ink drops ──────────────────────────────────────────────────────── -->
-    <!-- top-left cluster -->
-    <ellipse cx="4vw" cy="18vh" rx="6" ry="4" fill="#1c1710" opacity=".18" filter="url(#ink)"/>
-    <ellipse cx="4.6vw" cy="18.4vh" rx="2" ry="2" fill="#1c1710" opacity=".14" filter="url(#ink)"/>
-    <ellipse cx="3.4vw" cy="19.2vh" rx="1.2" ry="1" fill="#1c1710" opacity=".1"/>
-    <!-- satellite splatter -->
-    <circle cx="5.5vw" cy="17.2vh" r="1" fill="#1c1710" opacity=".12"/>
-    <circle cx="3vw"   cy="17vh"   r=".7" fill="#1c1710" opacity=".09"/>
-
-    <!-- right side large drop -->
-    <ellipse cx="96vw" cy="42vh" rx="9" ry="6" fill="#1c1710" opacity=".13" filter="url(#ink)"/>
-    <ellipse cx="97vw" cy="43.5vh" rx="3" ry="2" fill="#1c1710" opacity=".1" filter="url(#ink)"/>
-    <circle  cx="94vw" cy="41vh" r="1.2" fill="#1c1710" opacity=".08"/>
-    <circle  cx="97.5vw" cy="40.5vh" r=".8" fill="#1c1710" opacity=".08"/>
-
-    <!-- bottom scatter -->
-    <ellipse cx="88vw" cy="78vh" rx="5" ry="3.5" fill="#1c1710" opacity=".11" filter="url(#ink)"/>
-    <ellipse cx="89vw" cy="79vh" rx="1.5" ry="1" fill="#1c1710" opacity=".08"/>
-    <circle  cx="86.5vw" cy="77.5vh" r=".9" fill="#1c1710" opacity=".07"/>
-    <ellipse cx="12vw" cy="82vh" rx="4" ry="2.5" fill="#1c1710" opacity=".09" filter="url(#ink)"/>
-    <circle  cx="13.5vw" cy="80.8vh" r=".8" fill="#1c1710" opacity=".07"/>
-
-    <!-- ── coffee / water ring stains ─────────────────────────────────────── -->
-    <circle cx="91vw" cy="14vh" r="38" fill="none"
-      stroke="#a07840" stroke-width="1.5" opacity=".09" filter="url(#stain)"/>
-    <circle cx="91vw" cy="14vh" r="36" fill="none"
-      stroke="#a07840" stroke-width=".5" opacity=".06"/>
-    <!-- half-ring overlap -->
-    <circle cx="93vw" cy="16vh" r="28" fill="none"
-      stroke="#a07840" stroke-width="1" opacity=".07" filter="url(#stain)"/>
-
-    <!-- faint stain left -->
-    <circle cx="8vw" cy="68vh" r="30" fill="none"
-      stroke="#8b6030" stroke-width="1.2" opacity=".07" filter="url(#stain)"/>
-    <circle cx="8vw" cy="68vh" r="28.5" fill="none"
-      stroke="#8b6030" stroke-width=".4" opacity=".05"/>
-
-    <!-- ── pencil / ruling lines ───────────────────────────────────────────── -->
-    <!-- faint margin line left edge -->
-    <line x1="6.5vw" y1="0" x2="6.2vw" y2="100vh"
-      stroke="#c4964a" stroke-width=".4" opacity=".08"
-      stroke-dasharray="6 18"/>
-
-    <!-- ── pen scribble / bracket marks ──────────────────────────────────── -->
-    <!-- top-right corner bracket -->
-    <path d="M 88vw 6vh Q 88.5vw 5.5vh 89vw 6vh" fill="none"
-      stroke="#1c1710" stroke-width=".9" opacity=".12" stroke-linecap="round"/>
-    <path d="M 93vw 6vh Q 93.5vw 5.5vh 94vw 6vh" fill="none"
-      stroke="#1c1710" stroke-width=".9" opacity=".12" stroke-linecap="round"/>
-
-    <!-- small asterisk doodle bottom-left -->
-    <g transform="translate(calc(7vw), calc(90vh))" opacity=".1" stroke="#1c1710" stroke-width=".8" stroke-linecap="round">
-      <line x1="-5" y1="0" x2="5" y2="0"/>
-      <line x1="0" y1="-5" x2="0" y2="5"/>
-      <line x1="-3.5" y1="-3.5" x2="3.5" y2="3.5"/>
-      <line x1="3.5" y1="-3.5" x2="-3.5" y2="3.5"/>
-    </g>
-  `;
-
-  document.body.appendChild(svg);
+  document.body.appendChild(wrap);
 
 })();
