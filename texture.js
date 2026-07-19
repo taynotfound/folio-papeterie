@@ -28,35 +28,48 @@
         <filter id="stain-blur-sm">
           <feGaussianBlur stdDeviation="3.5"/>
         </filter>
+        <!-- ink drop shadow: crisp, dark, small offset -->
+        <filter id="drop" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#1c1710" flood-opacity=".35"/>
+        </filter>
+        <!-- coffee stain shadow: softer, warmer -->
+        <filter id="drop-soft" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="3" dy="5" stdDeviation="5" flood-color="#3a2210" flood-opacity=".25"/>
+        </filter>
       </defs>
 
       <!-- ── INK STAINS (real PNGs) ────────────────────────────────────────── -->
       <!-- top-left, near hero -->
-      <image href="ink1.png" x="-1%" y="180" width="260" opacity=".55"
+      <image href="ink1.png" x="-1%" y="180" width="260" opacity=".6"
+        filter="url(#drop)"
         style="mix-blend-mode:multiply"/>
 
       <!-- top-right, rotated -->
-      <image href="ink2.png" x="74%" y="90" width="220" opacity=".50"
+      <image href="ink2.png" x="74%" y="90" width="220" opacity=".55"
         transform="rotate(12, 900, 200)"
+        filter="url(#drop)"
         style="mix-blend-mode:multiply"/>
 
       <!-- mid-page left, flipped -->
-      <image href="ink3.png" x="-2%" y="1100" width="200" opacity=".45"
+      <image href="ink3.png" x="-2%" y="1100" width="200" opacity=".5"
         transform="scale(-1,1) translate(-200, 0)"
+        filter="url(#drop)"
         style="mix-blend-mode:multiply"/>
 
       <!-- lower right -->
-      <image href="ink4.png" x="76%" y="1800" width="240" opacity=".48"
+      <image href="ink4.png" x="76%" y="1800" width="240" opacity=".52"
         transform="rotate(-8, 1100, 1920)"
+        filter="url(#drop)"
         style="mix-blend-mode:multiply"/>
 
-      <!-- ── COFFEE RING ─ top right ───────────────────────────────────────── -->
-      <image href="coffee-stain.png" x="78%" y="120" width="220" opacity=".55"
+      <!-- ── COFFEE STAINS ───────────────────────────────────────────────────── -->
+      <image href="coffee-stain.png" x="78%" y="120" width="220" opacity=".6"
+        filter="url(#drop-soft)"
         style="mix-blend-mode:multiply"/>
 
-      <!-- ── COFFEE RING ─ lower left, rotated ────────────────────────────── -->
-      <image href="coffee-stain.png" x="-2%" y="1480" width="180" opacity=".40"
+      <image href="coffee-stain2.png" x="-2%" y="1480" width="200" opacity=".50"
         transform="rotate(-22, 80, 1570)"
+        filter="url(#drop-soft)"
         style="mix-blend-mode:multiply"/>
 
       <!-- ── PENCIL MARGIN LINE ─────────────────────────────────────────────── -->
