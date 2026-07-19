@@ -96,7 +96,7 @@ body {
   max-width: 680px;
 }
 .hero-since {
-  font-family: var(--ff-hand); font-size: 1.3rem;
+  font-family: var(--ff-hand); font-size: 1.55rem;
   color: var(--gold); margin-bottom: .8rem;
   animation: fadeDown .8s ease both;
 }
@@ -171,8 +171,8 @@ body {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   background: var(--parchment);
-  color: var(--gold); font-size: .7rem;
-  padding: 0 .8rem; opacity: .6;
+  color: var(--gold); font-size: .85rem;
+  padding: 0 1rem; opacity: .6;
 }
 .torn.bottom::after { background: var(--cream); }
 
@@ -182,7 +182,7 @@ body {
 
 /* ── Section labels ──────────────────────────────────────────────────────── */
 .label {
-  font-family: var(--ff-hand); font-size: 1.2rem; color: var(--gold);
+  font-family: var(--ff-hand); font-size: 1.5rem; color: var(--gold);
   display: block; margin-bottom: .4rem;
 }
 h2 {
@@ -227,9 +227,9 @@ h2 {
   font-family: var(--ff-serif); font-size: 1.35rem; font-weight: 600;
   margin-bottom: .5rem; color: var(--ink); letter-spacing: .01em;
 }
-.card p { font-size: .9rem; color: var(--ink-soft); margin-bottom: 1rem; }
+.card p { font-size: 1rem; color: var(--ink-soft); margin-bottom: 1rem; }
 .brands {
-  font-family: var(--ff-hand); font-size: .95rem; color: var(--gold);
+  font-family: var(--ff-hand); font-size: 1.1rem; color: var(--gold);
   margin-top: auto; padding-top: .5rem;
   border-top: 1px solid var(--border);
 }
@@ -258,7 +258,7 @@ blockquote p {
 }
 blockquote p:last-of-type { margin-bottom: 1.5rem; }
 blockquote footer {
-  font-size: .8rem; letter-spacing: .08em;
+  font-size: .95rem; letter-spacing: .06em;
   color: var(--muted); text-transform: uppercase;
   font-family: var(--ff-sans); font-style: normal;
 }
@@ -282,7 +282,7 @@ blockquote footer {
   background: rgba(28,23,16,.85);
   backdrop-filter: blur(4px);
   color: var(--gold); text-decoration: none;
-  font-size: .75rem; letter-spacing: .1em; text-transform: uppercase;
+  font-size: .85rem; letter-spacing: .09em; text-transform: uppercase;
   padding: .7rem 1rem;
   transition: background .2s;
 }
@@ -300,18 +300,18 @@ blockquote footer {
 }
 .besuch-info { display: flex; flex-direction: column; gap: 2.5rem; }
 .info-block h4 {
-  font-family: var(--ff-hand); font-size: 1.15rem; color: var(--gold);
+  font-family: var(--ff-hand); font-size: 1.4rem; color: var(--gold);
   margin-bottom: .6rem; display: flex; align-items: center; gap: .5rem;
 }
 .info-block h4 i { font-size: .85em; opacity: .8; }
-.info-block p { color: rgba(245,240,232,.8); font-size: .95rem; line-height: 1.8; }
-.info-block em { font-style: italic; font-size: .85rem; opacity: .7; }
+.info-block p { color: rgba(245,240,232,.8); font-size: 1.05rem; line-height: 1.8; }
+.info-block em { font-style: italic; font-size: .95rem; opacity: .7; }
 .info-block a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
 .info-block a:hover { color: var(--gold); }
 
 .map-link {
   display: inline-block; margin-top: .6rem;
-  font-size: .75rem; letter-spacing: .1em; text-transform: uppercase;
+  font-size: .85rem; letter-spacing: .09em; text-transform: uppercase;
   color: var(--gold) !important;
   text-decoration: none !important;
   border-bottom: 1px solid rgba(196,150,74,.4);
@@ -320,8 +320,8 @@ blockquote footer {
 }
 .map-link:hover { border-color: var(--gold); }
 
-.hours { border-collapse: collapse; font-size: .9rem; width: 100%; }
-.hours td { padding: .35rem 1.5rem .35rem 0; color: rgba(245,240,232,.8); }
+.hours { border-collapse: collapse; font-size: 1rem; width: 100%; }
+.hours td { padding: .4rem 1.5rem .4rem 0; color: rgba(245,240,232,.8); }
 .hours td:last-child { text-align: right; padding-right: 0; font-variant-numeric: tabular-nums; }
 .hours tr:not(.closed):first-child td { color: var(--cream); font-weight: 500; }
 .hours tr.closed td { color: rgba(245,240,232,.3); font-style: italic; }
@@ -334,7 +334,7 @@ footer {
   padding: 3rem 0; text-align: center;
 }
 .footer-logo {
-  font-family: var(--ff-serif); font-size: 1.3rem; color: var(--cream);
+  font-family: var(--ff-serif); font-size: 1.5rem; color: var(--cream);
   margin-bottom: .2rem;
 }
 .footer-logo span { color: var(--red); }
