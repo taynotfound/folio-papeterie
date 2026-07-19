@@ -30,24 +30,25 @@
         </filter>
       </defs>
 
-      <!-- ── INK DROPS ─ top-left cluster ─────────────────────────────────── -->
-      <ellipse cx="5.5%" cy="320" rx="7" ry="5" fill="#1c1710" opacity=".22" filter="url(#ink-bleed)"/>
-      <ellipse cx="6.2%" cy="328" rx="2.5" ry="1.8" fill="#1c1710" opacity=".16" filter="url(#ink-bleed)"/>
-      <circle  cx="4.3%" cy="315" r="1.2" fill="#1c1710" opacity=".13"/>
-      <circle  cx="7.1%" cy="312" r="0.8" fill="#1c1710" opacity=".10"/>
-      <circle  cx="4.8%" cy="334" r="0.6" fill="#1c1710" opacity=".09"/>
+      <!-- ── INK STAINS (real PNGs) ────────────────────────────────────────── -->
+      <!-- top-left, near hero -->
+      <image href="ink1.png" x="-1%" y="180" width="260" opacity=".55"
+        style="mix-blend-mode:multiply"/>
 
-      <!-- ── INK DROPS ─ right edge mid-page ──────────────────────────────── -->
-      <ellipse cx="97%" cy="780" rx="10" ry="7" fill="#1c1710" opacity=".17" filter="url(#ink-bleed)"/>
-      <ellipse cx="97.8%" cy="793" rx="3.5" ry="2.5" fill="#1c1710" opacity=".12" filter="url(#ink-bleed)"/>
-      <circle  cx="95.2%" cy="775" r="1.4" fill="#1c1710" opacity=".10"/>
-      <circle  cx="98.5%" cy="771" r="0.9" fill="#1c1710" opacity=".09"/>
-      <circle  cx="96.5%" cy="799" r="0.7" fill="#1c1710" opacity=".08"/>
+      <!-- top-right, rotated -->
+      <image href="ink2.png" x="74%" y="90" width="220" opacity=".50"
+        transform="rotate(12, 900, 200)"
+        style="mix-blend-mode:multiply"/>
 
-      <!-- ── INK DROPS ─ bottom-left scatter ──────────────────────────────── -->
-      <ellipse cx="9%" cy="1980" rx="5.5" ry="3.5" fill="#1c1710" opacity=".14" filter="url(#ink-bleed)"/>
-      <ellipse cx="9.8%" cy="1987" rx="2" ry="1.4" fill="#1c1710" opacity=".10"/>
-      <circle  cx="7.5%" cy="1977" r="1" fill="#1c1710" opacity=".08"/>
+      <!-- mid-page left, flipped -->
+      <image href="ink3.png" x="-2%" y="1100" width="200" opacity=".45"
+        transform="scale(-1,1) translate(-200, 0)"
+        style="mix-blend-mode:multiply"/>
+
+      <!-- lower right -->
+      <image href="ink4.png" x="76%" y="1800" width="240" opacity=".48"
+        transform="rotate(-8, 1100, 1920)"
+        style="mix-blend-mode:multiply"/>
 
       <!-- ── COFFEE RING ─ top right ───────────────────────────────────────── -->
       <image href="coffee-stain.png" x="78%" y="120" width="220" opacity=".55"
