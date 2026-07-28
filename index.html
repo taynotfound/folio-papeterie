@@ -219,35 +219,27 @@
     <div class="container" style="padding:4rem 2rem">
       <h2 class="section-title reveal">Einblicke</h2>
       <div style="columns:3;column-gap:1rem" class="reveal" id="masonry">
-        <img src="gallery1.jpg" class="gal-img" alt="">
-        <img src="gallery2.jpg" class="gal-img" alt="">
-        <img src="gallery3.jpg" class="gal-img" alt="">
-        <img src="gallery4.jpg" class="gal-img" alt="">
-        <img src="gallery5.jpg" class="gal-img" alt="">
-        <img src="gallery6.jpg" class="gal-img" alt="">
-        <img src="gallery7.jpg" class="gal-img" alt="">
-        <img src="gallery8.jpg" class="gal-img" alt="">
-        <img src="gallery9.jpg" class="gal-img" alt="">
-        <img src="gallery10.jpg" class="gal-img" alt="">
-        <img src="gallery11.jpg" class="gal-img" alt="">
-        <img src="gallery12.jpg" class="gal-img" alt="">
-        <img src="gallery13.jpg" class="gal-img" alt="">
-      </div>
-      <div id="slider" style="display:none;position:relative;text-align:center">
-        <img id="slide-img" style="max-height:70vh;max-width:100%;object-fit:contain;border-radius:2px">
-        <div style="margin-top:1rem;display:flex;align-items:center;justify-content:center;gap:1.5rem">
-          <button onclick="slide(-1)" style="background:none;border:1px solid currentColor;padding:.4rem 1rem;cursor:pointer;font-family:inherit">&#8592;</button>
-          <span id="slide-count" style="font-size:.85rem;opacity:.6"></span>
-          <button onclick="slide(1)" style="background:none;border:1px solid currentColor;padding:.4rem 1rem;cursor:pointer;font-family:inherit">&#8594;</button>
-        </div>
+        <img src="gallery1.jpg" class="gal-img" alt="" loading="lazy">
+        <img src="gallery2.jpg" class="gal-img" alt="" loading="lazy">
+        <img src="gallery3.jpg" class="gal-img" alt="" loading="lazy">
+        <img src="gallery4.jpg" class="gal-img" alt="" loading="lazy">
+        <img src="gallery5.jpg" class="gal-img" alt="" loading="lazy">
+        <img src="gallery6.jpg" class="gal-img" alt="" loading="lazy">
+        <img src="gallery7.jpg" class="gal-img" alt="" loading="lazy">
+        <img src="gallery8.jpg" class="gal-img" alt="" loading="lazy">
+        <img src="gallery9.jpg" class="gal-img" alt="" loading="lazy">
+        <img src="gallery10.jpg" class="gal-img" alt="" loading="lazy">
+        <img src="gallery11.jpg" class="gal-img" alt="" loading="lazy">
+        <img src="gallery12.jpg" class="gal-img" alt="" loading="lazy">
+        <img src="gallery13.jpg" class="gal-img" alt="" loading="lazy">
       </div>
       <div style="text-align:center;margin-top:1.5rem">
-        <button id="toggle-view" onclick="toggleView()" style="background:none;border:1px solid currentColor;padding:.4rem 1.2rem;cursor:pointer;font-family:inherit;font-size:.85rem">Slideshow</button>
       </div>
     </div>
-    <div id="lightbox" onclick="this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;cursor:zoom-out;align-items:center;justify-content:center">
+    <div id="lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;cursor:zoom-out;align-items:center;justify-content:center">
       <button id="lb-prev" style="background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;padding:1rem;position:absolute;left:1rem">&#8592;</button>
       <img id="lb-img" style="max-width:80vw;max-height:90vh;object-fit:contain">
+      <span id="lb-count" style="position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.75);font-size:.85rem;letter-spacing:.15em"></span>
       <button id="lb-next" style="background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;padding:1rem;position:absolute;right:1rem">&#8594;</button>
     </div>
   </section>
@@ -271,48 +263,26 @@
   <script>
     const lb = document.getElementById('lightbox');
     const lbImg = document.getElementById('lb-img');
-    document.querySelectorAll('.gal-img').forEach(img => {
-      img.addEventListener('click', () => { lbImg.src = img.src; lb.style.display='flex'; });
-    });
-    lb.addEventListener('click', e => { if(e.target===lb) lb.style.display='none'; });
-
     const lbImgs = [...document.querySelectorAll('.gal-img')].map(i=>i.src);
     let lbCur = 0;
-    function lbGo(n) { lbCur=(n+lbImgs.length)%lbImgs.length; lbImg.src=lbImgs[lbCur]; }
+    function lbGo(n) {
+      lbCur = (n + lbImgs.length) % lbImgs.length;
+      lbImg.src = lbImgs[lbCur];
+      document.getElementById('lb-count').textContent = (lbCur+1) + ' / ' + lbImgs.length;
+      if (lbCur === lbImgs.length - 1) lbImg.style.filter = 'sepia(.4)';
+      else lbImg.style.filter = '';
+    }
+    document.querySelectorAll('.gal-img').forEach((img,i) => {
+      img.addEventListener('click', () => { lbGo(i); lb.style.display='flex'; });
+    });
+    lb.addEventListener('click', e => { if(e.target===lb) lb.style.display='none'; });
     document.getElementById('lb-prev').onclick = e => { e.stopPropagation(); lbGo(lbCur-1); };
     document.getElementById('lb-next').onclick = e => { e.stopPropagation(); lbGo(lbCur+1); };
-    document.querySelectorAll('.gal-img').forEach((img,i) => {
-      img.addEventListener('click', () => { lbCur=i; lbImg.src=img.src; lb.style.display='flex'; });
-    });
-
-    const photos = [...Array(14)].map((_,i) => `gallery${i+1}.jpg`);
-    let cur = 0, sliderMode = false;
-    const slideImg = document.getElementById('slide-img');
-    const slideCount = document.getElementById('slide-count');
-
-    function showSlide(n) {
-      cur = (n + photos.length) % photos.length;
-      slideImg.src = photos[cur];
-      slideCount.textContent = `${cur+1} / ${photos.length}`;
-      if (cur === photos.length - 1) {
-        setTimeout(() => {
-          document.getElementById('galerie').style.setProperty('--egg','1');
-          slideCount.innerHTML += ' 🖊️';
-        }, 400);
-      }
-    }
-    function slide(d) { showSlide(cur + d); }
-    function toggleView() {
-      sliderMode = !sliderMode;
-      document.getElementById('masonry').style.display = sliderMode ? 'none' : '';
-      document.getElementById('slider').style.display = sliderMode ? 'block' : 'none';
-      document.getElementById('toggle-view').textContent = sliderMode ? 'Galerie' : 'Slideshow';
-      if (sliderMode) showSlide(0);
-    }
     document.addEventListener('keydown', e => {
-      if (!sliderMode) return;
-      if (e.key === 'ArrowRight') slide(1);
-      if (e.key === 'ArrowLeft') slide(-1);
+      if (lb.style.display !== 'flex') return;
+      if (e.key === 'ArrowRight') lbGo(lbCur+1);
+      if (e.key === 'ArrowLeft') lbGo(lbCur-1);
+      if (e.key === 'Escape') lb.style.display = 'none';
     });
   </script>
 </body>
