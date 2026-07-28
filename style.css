@@ -383,3 +383,7 @@ footer {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* GALERIE */
+.gal-img { width:100%;display:block;margin-bottom:1rem;break-inside:avoid;cursor:zoom-in;border-radius:2px;transition:opacity .2s; }
+.gal-img:hover { opacity:.85; }
