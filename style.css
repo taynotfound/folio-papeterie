@@ -401,6 +401,7 @@ footer {
   background-position: center;
   filter: blur(6px) brightness(.38) saturate(.7);
   transform: scale(1.08);
+  will-change: opacity;
   opacity: 0;
   animation: heroFade 24s infinite;
 }
