@@ -94,7 +94,7 @@ body {
   position: relative; z-index: 1;
   text-align: center; padding: 2rem;
   max-width: 540px;
-  margin-left: 4%;
+  margin-left: 10%;
   margin-right: auto;
 }
 .hero-since {
