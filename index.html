@@ -258,8 +258,10 @@
         <button id="toggle-view" onclick="toggleView()" style="background:none;border:1px solid currentColor;padding:.4rem 1.2rem;cursor:pointer;font-family:inherit;font-size:.85rem">Slideshow</button>
       </div>
     </div>
-    <div id="lightbox" onclick="this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;cursor:zoom-out;display:none;align-items:center;justify-content:center">
-      <img id="lb-img" style="max-width:90vw;max-height:90vh;object-fit:contain">
+    <div id="lightbox" onclick="this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;cursor:zoom-out;align-items:center;justify-content:center">
+      <button id="lb-prev" style="background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;padding:1rem;position:absolute;left:1rem">&#8592;</button>
+      <img id="lb-img" style="max-width:80vw;max-height:90vh;object-fit:contain">
+      <button id="lb-next" style="background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;padding:1rem;position:absolute;right:1rem">&#8594;</button>
     </div>
   </section>
 
@@ -285,7 +287,16 @@
     document.querySelectorAll('.gal-img').forEach(img => {
       img.addEventListener('click', () => { lbImg.src = img.src; lb.style.display='flex'; });
     });
-    lb.addEventListener('click', () => lb.style.display='none');
+    lb.addEventListener('click', e => { if(e.target===lb) lb.style.display='none'; });
+
+    const lbImgs = [...document.querySelectorAll('.gal-img')].map(i=>i.src);
+    let lbCur = 0;
+    function lbGo(n) { lbCur=(n+lbImgs.length)%lbImgs.length; lbImg.src=lbImgs[lbCur]; }
+    document.getElementById('lb-prev').onclick = e => { e.stopPropagation(); lbGo(lbCur-1); };
+    document.getElementById('lb-next').onclick = e => { e.stopPropagation(); lbGo(lbCur+1); };
+    document.querySelectorAll('.gal-img').forEach((img,i) => {
+      img.addEventListener('click', () => { lbCur=i; lbImg.src=img.src; lb.style.display='flex'; });
+    });
 
     const photos = [...Array(14)].map((_,i) => `gallery${i+1}.jpg`);
     let cur = 0, sliderMode = false;
