@@ -82,8 +82,9 @@
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Caveat:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v7.0.0/css/pro.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Caveat:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <link rel="preconnect" href="https://kit-pro.fontawesome.com" crossorigin>
+  <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v7.0.0/css/pro.min.css" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -173,29 +174,29 @@
     <div class="container" style="padding:4rem 2rem">
       <h2 class="section-title reveal">Einblicke</h2>
       <div style="columns:3;column-gap:1rem" class="reveal" id="masonry">
-        <img src="gallery1.jpg" class="gal-img" alt="Ladengeschäft der folio Papeterie in Göttingen" loading="lazy">
-        <img src="gallery2.jpg" class="gal-img" alt="Auswahl feiner Schreibwaren" loading="lazy">
-        <img src="gallery3.jpg" class="gal-img" alt="Notizbücher und Journale" loading="lazy">
-        <img src="gallery4.jpg" class="gal-img" alt="Grußkarten-Sortiment" loading="lazy">
-        <img src="gallery5.jpg" class="gal-img" alt="Edle Füllfederhalter" loading="lazy">
-        <img src="gallery6.jpg" class="gal-img" alt="Lederwaren und Taschen" loading="lazy">
-        <img src="gallery7.jpg" class="gal-img" alt="Geschenkartikel und Dekoration" loading="lazy">
-        <img src="gallery8.jpg" class="gal-img" alt="Feine Papiere" loading="lazy">
-        <img src="gallery9.jpg" class="gal-img" alt="Karten und Briefpapier" loading="lazy">
-        <img src="gallery10.jpg" class="gal-img" alt="Schaufenster der folio Papeterie" loading="lazy">
-        <img src="gallery11.jpg" class="gal-img" alt="Stifte und Schreibgeräte" loading="lazy">
-        <img src="gallery12.jpg" class="gal-img" alt="Innenansicht des Geschäfts" loading="lazy">
-        <img src="gallery13.jpg" class="gal-img" alt="Geschenkideen aus der Papeterie" loading="lazy">
-        <img src="gallery14.jpg" class="gal-img" alt="Detail aus dem Sortiment" loading="lazy">
+        <img src="gallery1.jpg" class="gal-img" width="1100" height="828" alt="Ladengeschäft der folio Papeterie in Göttingen" loading="lazy">
+        <img src="gallery2.jpg" class="gal-img" width="1100" height="828" alt="Auswahl feiner Schreibwaren" loading="lazy">
+        <img src="gallery3.jpg" class="gal-img" width="1100" height="828" alt="Notizbücher und Journale" loading="lazy">
+        <img src="gallery4.jpg" class="gal-img" width="1100" height="828" alt="Grußkarten-Sortiment" loading="lazy">
+        <img src="gallery5.jpg" class="gal-img" width="904" height="1200" alt="Edle Füllfederhalter" loading="lazy">
+        <img src="gallery6.jpg" class="gal-img" width="1100" height="828" alt="Lederwaren und Taschen" loading="lazy">
+        <img src="gallery7.jpg" class="gal-img" width="1100" height="828" alt="Geschenkartikel und Dekoration" loading="lazy">
+        <img src="gallery8.jpg" class="gal-img" width="1100" height="828" alt="Feine Papiere" loading="lazy">
+        <img src="gallery9.jpg" class="gal-img" width="1100" height="828" alt="Karten und Briefpapier" loading="lazy">
+        <img src="gallery10.jpg" class="gal-img" width="1100" height="828" alt="Schaufenster der folio Papeterie" loading="lazy">
+        <img src="gallery11.jpg" class="gal-img" width="1100" height="828" alt="Stifte und Schreibgeräte" loading="lazy">
+        <img src="gallery12.jpg" class="gal-img" width="1100" height="828" alt="Innenansicht des Geschäfts" loading="lazy">
+        <img src="gallery13.jpg" class="gal-img" width="1100" height="828" alt="Geschenkideen aus der Papeterie" loading="lazy">
+        <img src="gallery14.jpg" class="gal-img" width="1100" height="828" alt="Detail aus dem Sortiment" loading="lazy">
       </div>
       <div style="text-align:center;margin-top:1.5rem">
       </div>
     </div>
     <div id="lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;cursor:zoom-out;align-items:center;justify-content:center">
-      <button id="lb-prev" style="background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;padding:1rem;position:absolute;left:1rem">&#8592;</button>
-      <img id="lb-img" style="max-width:80vw;max-height:90vh;object-fit:contain">
+      <button id="lb-prev" aria-label="Vorheriges Bild" style="background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;padding:1rem;position:absolute;left:1rem">&#8592;</button>
+      <img id="lb-img" alt="Galeriebild in Großansicht" style="max-width:80vw;max-height:90vh;object-fit:contain">
       <span id="lb-count" style="position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.75);font-size:.85rem;letter-spacing:.15em"></span>
-      <button id="lb-next" style="background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;padding:1rem;position:absolute;right:1rem">&#8594;</button>
+      <button id="lb-next" aria-label="Nächstes Bild" style="background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;padding:1rem;position:absolute;right:1rem">&#8594;</button>
     </div>
   </section>
 
@@ -240,7 +241,7 @@
 
         <!-- Map -->
         <div class="map-embed reveal">
-          <iframe
+          <iframe loading="lazy" title="Karte: folio Papeterie, Kurze Geismarstraße 32, Göttingen"
             src="https://www.openstreetmap.org/export/embed.html?bbox=9.93496%2C51.529961%2C9.94096%2C51.533561000000006&layer=mapnik&marker=51.531761%2C9.93796"
             allowfullscreen
             loading="lazy"
@@ -269,8 +270,7 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
-  <script src="texture.js"></script>
+  <script src="app.js" defer></script>
   <script>
     const lb = document.getElementById('lightbox');
     const lbImg = document.getElementById('lb-img');
