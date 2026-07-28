@@ -217,7 +217,7 @@ h2 {
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(6, 1fr);
   gap: 1.5rem;
 }
 .card {
@@ -465,3 +465,12 @@ blockquote {
 
 /* footer */
 footer { border-top: 1px solid var(--border); padding: 3rem 0; }
+
+/* 3+2 layout: each card spans 2 of 6 cols, last two centered */
+.card { grid-column: span 2; }
+.card:nth-child(4) { grid-column: 2 / span 2; }
+.card:nth-child(5) { grid-column: 4 / span 2; }
+@media (max-width: 800px) {
+  .cards { grid-template-columns: 1fr; }
+  .card, .card:nth-child(4), .card:nth-child(5) { grid-column: auto; }
+}
