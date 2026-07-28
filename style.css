@@ -406,7 +406,7 @@ footer {
 }
 
 /* GALERIE */
-.gal-img { width:100%;display:block;margin-bottom:1rem;break-inside:avoid;cursor:zoom-in;border-radius:2px;transition:opacity .2s; }
+.gal-img { width:100%;height:auto;display:block;margin-bottom:1rem;break-inside:avoid;cursor:zoom-in;border-radius:2px;transition:opacity .2s; }
 .gal-img:hover { opacity:.85; }
 
 /* hand-drawn underline */
