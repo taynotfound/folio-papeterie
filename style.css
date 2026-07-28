@@ -125,9 +125,9 @@ body {
   font-size: 1.05rem; color: #4a4238;
   text-align: center; margin-top: 8px;
 }
-.polaroid.p1 { top: 10px;  left: 70px; transform: rotate(-5deg); z-index: 1; }
+.polaroid.p1 { top: 10px;  left: 70px; transform: rotate(-5deg); z-index: 3; }
 .polaroid.p2 { top: 70px;  left: 10px; transform: rotate(3deg);  z-index: 2; }
-.polaroid.p3 { top: 130px; left: 90px; transform: rotate(-2deg); z-index: 3; }
+.polaroid.p3 { top: 130px; left: 90px; transform: rotate(-2deg); z-index: 1; }
 .polaroid { transition: transform .3s ease, z-index 0s; }
 .polaroid:hover { transform: rotate(0deg) scale(1.04); z-index: 5; }
 @media (max-width: 860px) { .hero-stack { display: none; } .hero-content { text-align: center; margin: 0 auto; } .hero-ctas { justify-content: center; } }
