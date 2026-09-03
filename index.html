@@ -81,8 +81,7 @@
   }
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Caveat:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="fonts.css">
   <link rel="preconnect" href="https://kit-pro.fontawesome.com" crossorigin>
   <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v7.0.0/css/pro.min.css" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="style.css">
@@ -239,14 +238,14 @@
 
         </div>
 
-        <!-- Map -->
+        <!-- Map (click-to-load: no third-party request until the visitor consents) -->
         <div class="map-embed reveal">
-          <iframe loading="lazy" title="Karte: folio Papeterie, Kurze Geismarstraße 32, Göttingen"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=9.93496%2C51.529961%2C9.94096%2C51.533561000000006&layer=mapnik&marker=51.531761%2C9.93796"
-            allowfullscreen
-            loading="lazy"
-            title="Karte folio Papeterie Göttingen">
-          </iframe>
+          <div id="map-consent" class="map-consent">
+            <i class="fa-duotone fa-thin fa-map-location-dot" aria-hidden="true"></i>
+            <p>Die Karte wird von OpenStreetMap geladen. Dabei wird Ihre IP-Adresse an die OpenStreetMap Foundation übertragen. Erst mit Ihrem Klick wird die Karte geladen.</p>
+            <button type="button" id="map-load" class="map-consent-btn">Karte laden</button>
+            <small><a href="datenschutz.html">Mehr in der Datenschutzerklärung</a></small>
+          </div>
           <a class="map-fullscreen" href="https://www.openstreetmap.org/?mlat=51.531761&mlon=9.93796#map=18/51.531761/9.93796" target="_blank" rel="noopener">
             <i class="fa-duotone fa-thin fa-up-right-and-down-left-from-center"></i> Große Karte öffnen
           </a>
@@ -267,6 +266,10 @@
         <a href="https://maps.app.goo.gl/XCH9QZzpY8PrfoPZ8" target="_blank" rel="noopener" aria-label="Auf Google Maps zeigen"><i class="fa-duotone fa-thin fa-map-pin" aria-hidden="true"></i></a>
       </p>
       <p class="footer-imp">folio Papeterie Papierwaren GmbH &middot; Geschäftsführerinnen: Gina Lambert &amp; Dorothee Feierabend &middot; HRB 1769 Amtsgericht Göttingen &middot; USt-ID: DE115306893</p>
+      <p class="footer-legal">
+        <a href="impressum.html">Impressum</a> &middot;
+        <a href="datenschutz.html">Datenschutz</a>
+      </p>
     </div>
   </footer>
 
@@ -295,6 +298,30 @@
       if (e.key === 'ArrowLeft') lbGo(lbCur-1);
       if (e.key === 'Escape') lb.style.display = 'none';
     });
+
+    // Map click-to-load: inject the OSM iframe only after explicit consent.
+    const mapLoad = document.getElementById('map-load');
+    if (mapLoad) mapLoad.addEventListener('click', () => {
+      const wrap = document.getElementById('map-consent');
+      const f = document.createElement('iframe');
+      f.loading = 'lazy';
+      f.title = 'Karte: folio Papeterie, Kurze Geismarstraße 32, Göttingen';
+      f.src = 'https://www.openstreetmap.org/export/embed.html?bbox=9.93496%2C51.529961%2C9.94096%2C51.533561000000006&layer=mapnik&marker=51.531761%2C9.93796';
+      f.allowFullscreen = true;
+      wrap.replaceWith(f);
+    });
+
+    // One-time privacy notice (no cookies set; dismissal stored in localStorage — functional, exempt).
+    if (!localStorage.getItem('folio-privacy-ack')) {
+      const b = document.createElement('div');
+      b.className = 'privacy-banner';
+      b.innerHTML = 'Diese Website verwendet keine Cookies und kein Tracking. Schriften werden lokal geladen, die Karte erst auf Klick. <a href="datenschutz.html">Datenschutz</a> <button type="button" id="privacy-ok">Verstanden</button>';
+      document.body.appendChild(b);
+      document.getElementById('privacy-ok').addEventListener('click', () => {
+        localStorage.setItem('folio-privacy-ack', '1');
+        b.remove();
+      });
+    }
   </script>
 </body>
 </html>
