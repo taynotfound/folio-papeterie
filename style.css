@@ -19,6 +19,23 @@
 
 html { scroll-behavior: smooth; }
 
+.creator-section {
+  background: var(--parchment);
+  padding: 4rem 0;
+}
+
+.creator-section h2 {
+  margin-bottom: 1rem;
+}
+
+.creator-section p:not(.label) {
+  color: var(--ink-soft);
+  max-width: 55ch;
+}
+
+.creator-section strong {
+  color: var(--red);
+}
 
 body {
   background: var(--cream);
