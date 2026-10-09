@@ -15,6 +15,46 @@
   const tc = document.querySelector('meta[name="theme-color"]');
   if (tc) tc.setAttribute('content', '#f3f7fb');
 
+
+  // ── Fairy-light garland under the nav ──────────────────────────────────────
+  const COLORS = ['#e8404f', '#f4c74f', '#3fb27f', '#5aaae8'];
+  function buildGarland() {
+    const old = document.getElementById('winter-lights');
+    if (old) old.remove();
+    const nav = document.getElementById('nav');
+    const g = document.createElement('div');
+    g.id = 'winter-lights';
+    g.setAttribute('aria-hidden', 'true');
+    if (!nav) g.classList.add('is-fixed');          // legal pages have no nav
+
+    const W = window.innerWidth;
+    const S = W < 600 ? 62 : 86;                    // width of one swag
+    const sag = 14;                                 // how far each swag droops
+    const n = Math.ceil(W / S) + 1;
+
+    let d = 'M0,0';
+    for (let i = 0; i < n; i++) d += ' Q' + (i * S + S / 2) + ',' + (sag * 2) + ' ' + ((i + 1) * S) + ',0';
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', d);
+    svg.appendChild(path);
+    g.appendChild(svg);
+
+    for (let i = 0; i < n; i++) {
+      const b = document.createElement('span');
+      b.className = 'bulb';
+      b.style.left = (i * S + S / 2) + 'px';
+      b.style.top = (sag + 3) + 'px';
+      b.style.setProperty('--c', COLORS[i % COLORS.length]);
+      b.style.setProperty('--d', (-(i * 0.73) % 2.8).toFixed(2) + 's');
+      g.appendChild(b);
+    }
+    (nav || document.body).appendChild(g);
+  }
+  buildGarland();
+  let rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(buildGarland, 150); }, { passive: true });
+
   // Respect reduced-motion: keep the colours, skip the snowfall.
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
