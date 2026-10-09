@@ -1,0 +1,141 @@
+/* ── Snowy Winter theme ──────────────────────────────────────────────────────
+   Opt-in seasonal layer. Active only when <html data-theme="winter"> is set
+   (winter.js does this automatically 1 Dec – 6 Jan, or via ?theme=winter).
+   Everything is scoped, so removing the <link> restores the normal look.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+html[data-theme="winter"] {
+  --cream:    #f3f7fb;   /* fresh snow */
+  --parchment:#e2ebf4;   /* frosted blue-white */
+  --ink:      #14202e;   /* midnight */
+  --ink-soft: #2b3b4d;
+  --muted:    #5a6b7d;
+  --red:      #b3263a;   /* cranberry */
+  --green:    #2f6b4f;   /* fir */
+  --gold:     #c9a24a;   /* candle gold */
+  --border:   rgba(20,32,46,.12);
+  --snow:     #ffffff;
+}
+
+/* Nav */
+html[data-theme="winter"] #nav.scrolled { background: rgba(243,247,251,.95); }
+
+/* Hardcoded warm tints from style.css → cool equivalents */
+html[data-theme="winter"] .polaroid { background: #fbfdff; }
+html[data-theme="winter"] .polaroid figcaption { color: #3b4b5c; }
+html[data-theme="winter"] .info-block p,
+html[data-theme="winter"] .hours td { color: rgba(243,247,251,.82); }
+html[data-theme="winter"] .hours tr.closed td { color: rgba(243,247,251,.3); }
+html[data-theme="winter"] .footer-links a { color: rgba(243,247,251,.4); }
+html[data-theme="winter"] .footer-imp { color: rgba(243,247,251,.35); }
+
+/* Hero: soft sky-to-snow gradient */
+html[data-theme="winter"] #hero {
+  background: linear-gradient(180deg, #dbe8f4 0%, var(--cream) 62%);
+}
+html[data-theme="winter"] #hero h1 em { color: var(--red); }
+html[data-theme="winter"] .hero-since { color: var(--gold); }
+
+/* Snow drifts on top of the darker sections and the footer */
+html[data-theme="winter"] #besuch,
+html[data-theme="winter"] footer { position: relative; }
+html[data-theme="winter"] #besuch::before,
+html[data-theme="winter"] footer::before {
+  content: "";
+  position: absolute; left: 0; right: 0; top: -1px; height: 22px;
+  background:
+    radial-gradient(circle at 12px 0, var(--snow) 11px, transparent 12px) 0 0 / 24px 22px repeat-x,
+    radial-gradient(circle at 30px 0, var(--snow) 14px, transparent 15px) 0 0 / 56px 22px repeat-x;
+  opacity: .96;
+  pointer-events: none;
+}
+html[data-theme="winter"] #besuch::before { top: 0; }
+html[data-theme="winter"] #besuch > .container,
+html[data-theme="winter"] #besuch > * { position: relative; }
+html[data-theme="winter"] #besuch::before { z-index: 1; }
+
+/* Little holly/snowflake touches on labels and the logo */
+html[data-theme="winter"] .logo::after { content: " ❄"; font-size: .7em; color: #7fb3e0; }
+html[data-theme="winter"] .btn-primary:hover,
+html[data-theme="winter"] .nav-cta { background: var(--red); }
+html[data-theme="winter"] .nav-cta:hover { background: var(--green); }
+
+/* Snowfall canvas (created by winter.js) */
+#winter-snow {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 150;
+}
+
+
+/* ── Fairy-light garland hanging under the nav (built by winter.js) ───────── */
+#winter-lights {
+  position: absolute; left: 0; right: 0; top: 100%; height: 46px;
+  pointer-events: none; overflow: hidden; z-index: 1;
+}
+#winter-lights.is-fixed { position: fixed; top: 0; z-index: 200; }
+#winter-lights svg { position: absolute; left: 0; top: 0; width: 100%; height: 34px; }
+#winter-lights path { fill: none; stroke: #33445a; stroke-width: 1.3; opacity: .65; }
+#winter-lights .bulb {
+  position: absolute; width: 9px; height: 13px; margin-left: -4.5px;
+  border-radius: 50% 50% 50% 50% / 38% 38% 62% 62%;
+  background: var(--c); color: var(--c);
+  box-shadow: 0 0 7px 2px var(--c);
+  animation: winter-glow 2.8s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+#winter-lights .bulb::before {            /* socket */
+  content: ""; position: absolute; top: -4px; left: 50%;
+  width: 5px; height: 5px; margin-left: -2.5px;
+  background: #3a4756; border-radius: 1px;
+}
+#winter-lights .bulb::after {             /* little highlight */
+  content: ""; position: absolute; top: 3px; left: 2px;
+  width: 2px; height: 3px; border-radius: 50%; background: rgba(255,255,255,.7);
+}
+@keyframes winter-glow {
+  0%, 100% { opacity: .6;  box-shadow: 0 0 3px 0 var(--c); }
+  50%      { opacity: 1;   box-shadow: 0 0 14px 5px var(--c); }
+}
+
+/* ── Snow caps on cards, buttons and polaroids ─────────────────────────────── */
+html[data-theme="winter"] .card,
+html[data-theme="winter"] .polaroid,
+html[data-theme="winter"] .btn-primary,
+html[data-theme="winter"] .nav-cta,
+html[data-theme="winter"] .map-consent-btn { position: relative; }
+
+html[data-theme="winter"] .card::after,
+html[data-theme="winter"] .polaroid::after {
+  content: ""; position: absolute; left: -4px; right: -4px; top: -13px; height: 18px;
+  z-index: 3; pointer-events: none;
+  border-radius: 8px 8px 2px 2px;
+  background:
+    radial-gradient(circle at 9%  100%, #fff 9px,  transparent 9.7px),
+    radial-gradient(circle at 27% 100%, #fff 13px, transparent 13.7px),
+    radial-gradient(circle at 46% 100%, #fff 8px,  transparent 8.7px),
+    radial-gradient(circle at 64% 100%, #fff 12px, transparent 12.7px),
+    radial-gradient(circle at 85% 100%, #fff 9px,  transparent 9.7px),
+    linear-gradient(#fff, #fff) bottom / 100% 7px no-repeat;
+  filter: drop-shadow(0 1px 1px rgba(70,100,140,.3));
+}
+html[data-theme="winter"] .card:nth-child(even)::after { transform: scaleX(-1); }
+html[data-theme="winter"] .polaroid::after { top: -10px; height: 14px; left: 8px; right: 8px; transform: scale(.8); transform-origin: bottom; }
+
+html[data-theme="winter"] .btn-primary::after,
+html[data-theme="winter"] .nav-cta::after,
+html[data-theme="winter"] .map-consent-btn::after {
+  content: ""; position: absolute; left: -2px; right: -2px; top: -8px; height: 12px;
+  pointer-events: none;
+  border-radius: 6px 6px 1px 1px;
+  background:
+    radial-gradient(circle at 14% 100%, #fff 5px, transparent 5.6px),
+    radial-gradient(circle at 40% 100%, #fff 8px, transparent 8.6px),
+    radial-gradient(circle at 68% 100%, #fff 5px, transparent 5.6px),
+    radial-gradient(circle at 90% 100%, #fff 6px, transparent 6.6px),
+    linear-gradient(#fff, #fff) bottom / 100% 4px no-repeat;
+  filter: drop-shadow(0 1px 1px rgba(70,100,140,.3));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #winter-lights .bulb { animation: none; opacity: 1; box-shadow: 0 0 8px 2px var(--c); }
+}
