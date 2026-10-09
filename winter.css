@@ -1,0 +1,91 @@
+/* ── Snowy Winter theme ──────────────────────────────────────────────────────
+   Opt-in seasonal layer. Active only when <html data-theme="winter"> is set
+   (winter.js does this automatically 1 Dec – 6 Jan, or via ?theme=winter).
+   Everything is scoped, so removing the <link> restores the normal look.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+html[data-theme="winter"] {
+  --cream:    #f3f7fb;   /* fresh snow */
+  --parchment:#e2ebf4;   /* frosted blue-white */
+  --ink:      #14202e;   /* midnight */
+  --ink-soft: #2b3b4d;
+  --muted:    #5a6b7d;
+  --red:      #b3263a;   /* cranberry */
+  --green:    #2f6b4f;   /* fir */
+  --gold:     #c9a24a;   /* candle gold */
+  --border:   rgba(20,32,46,.12);
+  --snow:     #ffffff;
+}
+
+/* Nav */
+html[data-theme="winter"] #nav.scrolled { background: rgba(243,247,251,.95); }
+
+/* Hardcoded warm tints from style.css → cool equivalents */
+html[data-theme="winter"] .polaroid { background: #fbfdff; }
+html[data-theme="winter"] .polaroid figcaption { color: #3b4b5c; }
+html[data-theme="winter"] .info-block p,
+html[data-theme="winter"] .hours td { color: rgba(243,247,251,.82); }
+html[data-theme="winter"] .hours tr.closed td { color: rgba(243,247,251,.3); }
+html[data-theme="winter"] .footer-links a { color: rgba(243,247,251,.4); }
+html[data-theme="winter"] .footer-imp { color: rgba(243,247,251,.35); }
+
+/* Hero: soft sky-to-snow gradient */
+html[data-theme="winter"] #hero {
+  background: linear-gradient(180deg, #dbe8f4 0%, var(--cream) 62%);
+}
+html[data-theme="winter"] #hero h1 em { color: var(--red); }
+html[data-theme="winter"] .hero-since { color: var(--gold); }
+
+/* Snow drifts on top of the darker sections and the footer */
+html[data-theme="winter"] #besuch,
+html[data-theme="winter"] footer { position: relative; }
+html[data-theme="winter"] #besuch::before,
+html[data-theme="winter"] footer::before {
+  content: "";
+  position: absolute; left: 0; right: 0; top: -1px; height: 22px;
+  background:
+    radial-gradient(circle at 12px 0, var(--snow) 11px, transparent 12px) 0 0 / 24px 22px repeat-x,
+    radial-gradient(circle at 30px 0, var(--snow) 14px, transparent 15px) 0 0 / 56px 22px repeat-x;
+  opacity: .96;
+  pointer-events: none;
+}
+html[data-theme="winter"] #besuch::before { top: 0; }
+html[data-theme="winter"] #besuch > .container,
+html[data-theme="winter"] #besuch > * { position: relative; }
+html[data-theme="winter"] #besuch::before { z-index: 1; }
+
+/* Fairy lights along the very top of the page */
+html[data-theme="winter"] body::before {
+  content: "";
+  position: fixed; top: 0; left: 0; right: 0; height: 14px; z-index: 200;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 7px, var(--red)   3.5px, transparent 4.5px) 0   0 / 120px 14px repeat-x,
+    radial-gradient(circle at 50% 7px, var(--gold)  3.5px, transparent 4.5px) 30px 0 / 120px 14px repeat-x,
+    radial-gradient(circle at 50% 7px, var(--green) 3.5px, transparent 4.5px) 60px 0 / 120px 14px repeat-x,
+    radial-gradient(circle at 50% 7px, #5aa0d6      3.5px, transparent 4.5px) 90px 0 / 120px 14px repeat-x;
+  filter: drop-shadow(0 0 4px rgba(255,220,150,.7));
+  animation: winter-twinkle 3.2s ease-in-out infinite;
+}
+html[data-theme="winter"] #nav { top: 14px; }
+
+/* Little holly/snowflake touches on labels and the logo */
+html[data-theme="winter"] .logo::after { content: " ❄"; font-size: .7em; color: #7fb3e0; }
+html[data-theme="winter"] .btn-primary:hover,
+html[data-theme="winter"] .nav-cta { background: var(--red); }
+html[data-theme="winter"] .nav-cta:hover { background: var(--green); }
+
+/* Snowfall canvas (created by winter.js) */
+#winter-snow {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 150;
+}
+
+@keyframes winter-twinkle {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="winter"] body::before { animation: none; }
+}
