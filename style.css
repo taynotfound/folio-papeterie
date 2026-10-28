@@ -81,7 +81,7 @@ body {
   transition: background .2s, transform .2s;
 }
 .nav-cta:hover { background: var(--ink); transform: translateY(-1px); }
-.nav-cta i { margin-right: .3rem; }
+.nav-cta .ico { margin-right: .3rem; }
 
 /* ── Hero ─────────────────────────────────────────────────────────────────── */
 #hero {
@@ -117,7 +117,7 @@ body {
   transition: border-color .2s;
 }
 .hero-link:hover { border-color: var(--gold); }
-.hero-link i { font-size: .8em; margin-left: .2em; }
+.hero-link .ico { font-size: .8em; margin-left: .2em; }
 
 /* Polaroid stack */
 .hero-stack {
@@ -192,11 +192,11 @@ body {
   user-select: none;
 }
 
-/* ── Font Awesome Duotone theming ────────────────────────────────────────── */
-.fa-duotone { --fa-primary-color: var(--gold); --fa-secondary-color: var(--red); --fa-secondary-opacity: .4; }
-.card-icon .fa-duotone { --fa-primary-color: var(--red); --fa-secondary-color: var(--gold); --fa-secondary-opacity: .35; }
-.info-block .fa-duotone { --fa-primary-color: var(--gold); --fa-secondary-color: var(--cream); --fa-secondary-opacity: .25; }
-.footer-links .fa-duotone { --fa-primary-color: var(--cream); --fa-secondary-color: var(--gold); --fa-secondary-opacity: .5; }
+/* ── Inline SVG icons (self-hosted, no external requests) ─────────────────── */
+.ico { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; vertical-align: -.125em; flex-shrink: 0; color: var(--gold); }
+.card-icon .ico { color: var(--red); }
+.info-block .ico { color: var(--gold); }
+.footer-links .ico { color: var(--cream); }
 
 /* ── Hero underlines ─────────────────────────────────────────────────────── */
 .hero-underlines {
@@ -341,7 +341,7 @@ blockquote footer {
   font-family: var(--ff-hand); font-size: 1.4rem; color: var(--gold);
   margin-bottom: .6rem; display: flex; align-items: center; gap: .5rem;
 }
-.info-block h4 i { font-size: .85em; opacity: .8; }
+.info-block h4 .ico { font-size: .85em; opacity: .8; }
 .info-block p { color: rgba(245,240,232,.8); font-size: 1.05rem; line-height: 1.8; }
 .info-block em { font-style: italic; font-size: .95rem; opacity: .7; }
 .info-block a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
@@ -504,7 +504,7 @@ footer { border-top: 1px solid var(--border); padding: 3rem 0; }
   background: var(--parchment); color: var(--ink-soft);
   border: 1px solid var(--border); border-radius: 10px; min-height: 260px;
 }
-.map-consent i { font-size: 2rem; color: var(--gold); }
+.map-consent .ico { font-size: 2rem; color: var(--gold); }
 .map-consent p { max-width: 46ch; font-size: .95rem; }
 .map-consent small a { color: var(--muted); }
 .map-consent-btn {
