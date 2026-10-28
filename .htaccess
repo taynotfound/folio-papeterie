@@ -1,0 +1,19 @@
+# Security headers for the Apache hosting at IONOS. Each block is skipped if the module is not available.
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), interest-cohort=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  # Inline script/style are used by index.html; the map iframe (OpenStreetMap) is only inserted after a click.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; frame-src https://www.openstreetmap.org; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+</IfModule>
+
+# Never serve repository internals or editor leftovers.
+<FilesMatch "(^\.|\.(md|bak|orig|py|sh|log|ya?ml|json)$)">
+  Require all denied
+</FilesMatch>
+<IfModule mod_autoindex.c>
+  Options -Indexes
+</IfModule>
