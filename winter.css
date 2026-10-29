@@ -243,3 +243,10 @@ html[data-theme="winter"] footer::after {
 }
 html[data-theme="winter"] footer { position: relative; }
 html[data-theme="winter"] #besuch::before { display: none; }
+
+html[data-theme="winter"] .legal-page h2 { color: var(--ink); }
+html[data-theme="winter"] .legal-foot { background: transparent; border-top: 1px solid rgba(176,141,76,.4); }
+html[data-theme="winter"] .legal-foot .footer-logo span { color: var(--gold); }
+html[data-theme="winter"] .legal-foot .footer-legal a { color: var(--muted); border-color: var(--border); }
+html[data-theme="winter"] .legal-foot::after, html[data-theme="winter"] footer.legal-foot::before { content: none; }
+html[data-theme="winter"] .legal-foot .winter-greet--foot { color: var(--red); }
