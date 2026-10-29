@@ -120,15 +120,66 @@ html[data-theme="winter"] .container.narrow h2::before { content: none; }
   position: absolute; width: 5px; height: 8px; margin-left: -2.5px;
   border-radius: 50% 50% 50% 50% / 38% 38% 62% 62%;
   background: var(--c);
-  box-shadow: 0 0 8px 2px var(--c);
+  box-shadow: 0 0 9px 3px var(--c);
+  will-change: opacity;
   animation: winter-glow 3.6s ease-in-out infinite;
   animation-delay: var(--d, 0s);
 }
-@keyframes winter-glow {
-  0%, 100% { opacity: .55; box-shadow: 0 0 4px 1px var(--c); }
-  50%      { opacity: 1;   box-shadow: 0 0 12px 4px var(--c); }
-}
+@keyframes winter-glow { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
 
 @media (prefers-reduced-motion: reduce) {
   #winter-lights .bulb { animation: none; opacity: 1; }
 }
+.winter-calm #winter-lights .bulb { animation: none; opacity: 1; will-change: auto; }
+@media (prefers-reduced-motion: reduce) {
+  .winter-greet { animation: none; }
+}
+
+/* ── Everywhere a little Christmas ─────────────────────────────────────────── */
+html[data-theme="winter"] .winter-greet {
+  font-family: var(--ff-serif); font-style: italic; font-size: 1.1rem;
+  color: var(--red); margin: -.4rem 0 .9rem; letter-spacing: .03em;
+}
+html[data-theme="winter"] .winter-greet::before,
+html[data-theme="winter"] .winter-greet::after { content: "✦"; color: var(--gold); font-size: .7em; margin: 0 .6em; vertical-align: .15em; }
+html[data-theme="winter"] .winter-greet--foot { color: #d6b877; margin: 0 0 .4rem; }
+
+/* Icons: gold with a burgundy/fir accent on hover */
+html[data-theme="winter"] .ico { color: var(--gold); }
+html[data-theme="winter"] .card-icon .ico { color: var(--red); }
+html[data-theme="winter"] .card:nth-child(even) .card-icon .ico { color: var(--green); }
+html[data-theme="winter"] #besuch .ico,
+html[data-theme="winter"] .footer-links .ico { color: #d6b877; }
+
+/* Holly-and-berries divider between sections */
+html[data-theme="winter"] section + section::before {
+  content: ""; display: block; height: 14px; margin: -7px auto 0; width: 120px; position: relative; z-index: 2;
+  background:
+    radial-gradient(circle 3px at 50% 50%, var(--red) 98%, transparent) ,
+    radial-gradient(circle 3px at calc(50% - 8px) 60%, var(--red) 98%, transparent),
+    radial-gradient(circle 3px at calc(50% + 8px) 60%, var(--red) 98%, transparent),
+    radial-gradient(ellipse 14px 5px at 10% 50%, var(--green) 98%, transparent),
+    radial-gradient(ellipse 14px 5px at 90% 50%, var(--green) 98%, transparent),
+    linear-gradient(90deg, transparent, rgba(176,141,76,.55) 25%, rgba(176,141,76,.55) 75%, transparent) center / 100% 1px no-repeat;
+}
+html[data-theme="winter"] #hero + section::before { display: none; }
+html[data-theme="winter"] #besuch::before,
+html[data-theme="winter"] .creator-section::before { filter: brightness(1.25); }
+
+/* Ribbon on card hover edge + baubles on the polaroids */
+html[data-theme="winter"] .card::after {
+  content: ""; position: absolute; top: -1px; right: 1.4rem; width: 14px; height: 26px;
+  background: linear-gradient(180deg, var(--red), #5f1626);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
+  opacity: .9;
+}
+html[data-theme="winter"] .card:nth-child(even)::after { background: linear-gradient(180deg, var(--green), #17291f); }
+html[data-theme="winter"] .polaroid::after {
+  content: ""; position: absolute; top: -9px; left: 50%; width: 46px; height: 16px; margin-left: -23px;
+  background: rgba(125,31,51,.82); transform: rotate(-2deg); box-shadow: 0 1px 2px rgba(0,0,0,.2);   /* festive washi tape */
+}
+html[data-theme="winter"] .btn-primary,
+html[data-theme="winter"] .nav-cta { position: relative; }
+
+/* Cheaper compositing on weak machines */
+@media (max-width: 860px) { #winter-lights { height: 34px; } }

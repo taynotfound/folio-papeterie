@@ -53,8 +53,7 @@ body {
   transition: background .4s, box-shadow .4s;
 }
 #nav.scrolled {
-  background: rgba(245,240,232,.95);
-  backdrop-filter: blur(8px);
+  background: rgba(245,240,232,.97);
   box-shadow: 0 1px 0 var(--border);
 }
 .nav-inner {
@@ -318,7 +317,6 @@ blockquote footer {
   display: flex; align-items: center; gap: .5rem;
   position: absolute; bottom: 0; left: 0; right: 0;
   background: rgba(28,23,16,.85);
-  backdrop-filter: blur(4px);
   color: var(--gold); text-decoration: none;
   font-size: .85rem; letter-spacing: .09em; text-transform: uppercase;
   padding: .7rem 1rem;
@@ -580,11 +578,11 @@ h2 { margin-bottom: 2.4rem; }
 /* Lightbox */
 .lightbox {
   position: fixed; inset: 0; z-index: 999; cursor: zoom-out;
-  background: rgba(10,10,12,.92); backdrop-filter: blur(4px);
+  background: rgba(10,10,12,.94);
   display: flex; align-items: center; justify-content: center;
 }
 .lightbox[hidden] { display: none; }
-.lightbox img { max-width: min(88vw, 1400px); max-height: 88vh; object-fit: contain; cursor: default; box-shadow: 0 20px 80px rgba(0,0,0,.6); }
+.lightbox img { max-width: min(88vw, 1400px); max-height: 88vh; object-fit: contain; cursor: default;  }
 .lb-btn {
   position: absolute; background: none; border: 0; color: #fff; cursor: pointer;
   font-size: 2rem; line-height: 1; padding: 1rem; opacity: .75; transition: opacity .2s;
