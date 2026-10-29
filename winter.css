@@ -151,20 +151,18 @@ html[data-theme="winter"] .card:nth-child(even) .card-icon .ico { color: var(--g
 html[data-theme="winter"] #besuch .ico,
 html[data-theme="winter"] .footer-links .ico { color: #d6b877; }
 
-/* Holly-and-berries divider between sections */
+/* Holly sprig on a fading gold rule, set on the line between sections */
+html[data-theme="winter"] section + section,
+html[data-theme="winter"] #sortiment,
+html[data-theme="winter"] #galerie { position: relative; overflow: visible; border-top-color: transparent; }
 html[data-theme="winter"] section + section::before {
-  content: ""; display: block; height: 14px; margin: -7px auto 0; width: 120px; position: relative; z-index: 2;
-  background:
-    radial-gradient(circle 3px at 50% 50%, var(--red) 98%, transparent) ,
-    radial-gradient(circle 3px at calc(50% - 8px) 60%, var(--red) 98%, transparent),
-    radial-gradient(circle 3px at calc(50% + 8px) 60%, var(--red) 98%, transparent),
-    radial-gradient(ellipse 14px 5px at 10% 50%, var(--green) 98%, transparent),
-    radial-gradient(ellipse 14px 5px at 90% 50%, var(--green) 98%, transparent),
-    linear-gradient(90deg, transparent, rgba(176,141,76,.55) 25%, rgba(176,141,76,.55) 75%, transparent) center / 100% 1px no-repeat;
+  content: ""; position: absolute; z-index: 2; top: 0; left: 50%;
+  width: min(300px, 70vw); aspect-ratio: 240 / 26; transform: translate(-50%, -50%);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 26'%3E %3Cdefs%3E%3ClinearGradient id='l' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='84' y2='0'%3E%3Cstop offset='0' stop-color='%23b08d4c' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23b08d4c' stop-opacity='.85'/%3E%3C/linearGradient%3E %3ClinearGradient id='r' gradientUnits='userSpaceOnUse' x1='240' y1='0' x2='156' y2='0'%3E%3Cstop offset='0' stop-color='%23b08d4c' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23b08d4c' stop-opacity='.85'/%3E%3C/linearGradient%3E%3C/defs%3E %3Cpath d='M0 13.5H84' stroke='url(%23l)' stroke-width='.8'/%3E%3Cpath d='M156 13.5H240' stroke='url(%23r)' stroke-width='.8'/%3E %3Cpath d='M117.0,13.0 Q114.0,14.0 110.6,16.6 Q108.4,13.9 105.0,16.7 Q103.0,12.8 99.9,14.3 Q97.8,10.5 95.2,9.9 L94.2,8.2 Q98.5,7.5 101.9,4.8 Q104.1,7.5 107.5,4.7 Q109.5,8.6 112.6,7.1 Q114.6,10.9 117.3,11.5 Z' fill='%2326433a'/%3E%3Cpath d='M123.0,13.0 Q125.4,10.9 127.4,7.1 Q130.5,8.6 132.5,4.7 Q135.9,7.5 138.1,4.8 Q141.5,7.5 144.2,6.9 L145.8,8.2 Q142.2,10.5 140.1,14.3 Q137.0,12.8 135.0,16.7 Q131.6,13.9 129.4,16.6 Q126.0,14.0 123.3,14.5 Z' fill='%232f5246'/%3E %3Cpath d='M116.0,12.8 L97.2,8.8 M124.0,12.8 L142.8,8.8' stroke='%235d7d6f' stroke-width='.6' fill='none' stroke-linecap='round'/%3E %3Ccircle cx='116.6' cy='10.6' r='2.7' fill='%237d1f33'/%3E%3Ccircle cx='122.4' cy='10' r='2.5' fill='%238d2a3e'/%3E%3Ccircle cx='119.6' cy='14.6' r='2.7' fill='%23741b2e'/%3E %3Ccircle cx='115.9' cy='9.8' r='.7' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='121.8' cy='9.2' r='.65' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='118.9' cy='13.8' r='.7' fill='%23fff' fill-opacity='.5'/%3E %3C/svg%3E") center / contain no-repeat;
 }
 html[data-theme="winter"] #hero + section::before { display: none; }
 html[data-theme="winter"] #besuch::before,
-html[data-theme="winter"] .creator-section::before { filter: brightness(1.25); }
+html[data-theme="winter"] .creator-section::before { display: none; }
 
 /* Ribbon on card hover edge + baubles on the polaroids */
 html[data-theme="winter"] .card::after {
