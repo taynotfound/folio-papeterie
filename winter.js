@@ -100,15 +100,121 @@
     clearTimeout(rt); rt = setTimeout(buildGarland, 150);
   }, { passive: true });
 
-  // ── Snow caps on buttons, cards and prints (static, cheap) ─────────────────
-  const capped = [...document.querySelectorAll('.btn-primary, .nav-cta, .map-consent-btn, .card')];
-  const caps = capped.map(el => {
-    const c = document.createElement('span');
-    c.className = 'snow-cap' + (el.matches('.card') ? ' snow-cap--big' : '');
-    c.setAttribute('aria-hidden', 'true');
-    el.insertBefore(c, el.firstChild);
-    return c;
+  // ── Snow caps & banks ──────────────────────────────────────────────────────
+  // Each cap is a small inline SVG drawn from a seeded, smoothed noise profile:
+  // a mound that thins out towards the ends, a lip hanging over the front edge
+  // with the odd drip, a cool underside and a faint contact shadow. Static, so
+  // it costs nothing once drawn; redrawn only on resize or when snow is lost.
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const defs = document.createElementNS(SVGNS, 'svg');
+  defs.setAttribute('width', '0'); defs.setAttribute('height', '0');
+  defs.setAttribute('aria-hidden', 'true'); defs.style.position = 'absolute';
+  defs.innerHTML =
+    '<defs>' +
+    '<linearGradient id="w-snow-body" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#fbfcfe"/><stop offset="1" stop-color="#e7edf4"/>' +
+    '</linearGradient>' +
+    '<linearGradient id="w-snow-under" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#c9d5e3" stop-opacity="0"/><stop offset="1" stop-color="#aebdcf" stop-opacity=".5"/>' +
+    '</linearGradient>' +
+    '</defs>';
+  document.body.insertBefore(defs, document.body.firstChild);
+
+  function rng(seed) { let x = seed * 9301 + 49297; return () => ((x = (x * 16807) % 2147483647) / 2147483647); }
+
+  // Catmull-Rom through the points → cubic Béziers
+  function curve(p) {
+    let d = '';
+    for (let i = 0; i < p.length - 1; i++) {
+      const a = p[i - 1] || p[i], b = p[i], c = p[i + 1], e = p[i + 2] || c;
+      d += ' C' + (b[0] + (c[0] - a[0]) / 6).toFixed(1) + ',' + (b[1] + (c[1] - a[1]) / 6).toFixed(1) +
+           ' ' + (c[0] - (e[0] - b[0]) / 6).toFixed(1) + ',' + (c[1] - (e[1] - b[1]) / 6).toFixed(1) +
+           ' ' + c[0].toFixed(1) + ',' + c[1].toFixed(1);
+    }
+    return d;
+  }
+
+  const KINDS = {
+    //        overhang, mound depth, lip, drips per 100px, drip length, end rounding (lower = flatter)
+    button: { ov: 2, depth: 8,  lip: 2,   drips: .45, drip: 4,  round: .5,  drape: 3 },
+    card:   { ov: 2, depth: 14, lip: 3,   drips: .5,  drip: 7,  round: .42, drape: 5 },
+    bank:   { ov: 10, depth: 12, lip: 4.5, drips: .45, drip: 12, round: .05, drape: 0 }
+  };
+
+  function drawSnow(cap) {
+    const k = KINDS[cap.kind], R = rng(cap.seed);
+    const W = Math.round(cap.el.offsetWidth + k.ov * 2);
+    if (W < 20) return;
+    const E = k.depth + 1;                                    // y of the surface the snow sits on
+    const H = E + k.lip + k.drip + k.drape + 4;
+    const f1 = 2 + R() * 3, f2 = 7 + R() * 6, p1 = R() * 6.3, p2 = R() * 6.3, p3 = R() * 6.3;
+    const env = t => Math.pow(Math.max(0, Math.sin(Math.PI * t)), k.round);
+    const drips = [];
+    const nd = Math.max(cap.kind === 'bank' ? 2 : 0, Math.round(W / 100 * k.drips * (0.6 + R() * 0.8)));
+    for (let i = 0; i < nd; i++) drips.push({ x: (0.06 + 0.88 * (i + 0.5 + (R() - 0.5) * 0.8) / nd) * W, w: 2.5 + R() * 6, l: k.drip * (0.35 + R() * 0.65) });
+
+    // a handful of soft mounds, so the surface looks piled rather than wavy
+    const mounds = [];
+    for (let i = 0, n = Math.max(3, Math.round(W / 55)); i < n; i++)
+      mounds.push({ c: R(), w: 0.05 + R() * 0.12, a: 0.4 + R() * 0.6 });
+    let mMax = 0;
+    const mound = t => mounds.reduce((s, m) => s + m.a * Math.exp(-Math.pow((t - m.c) / m.w, 2)), 0);
+    for (let t = 0; t <= 1; t += 0.01) mMax = Math.max(mMax, mound(t));
+
+    const step = Math.max(4, W / 70), top = [], bot = [];
+    for (let x = 0; x <= W + 0.01; x += step) {
+      const t = x / W, e = env(t);
+      const n = 0.5 + 0.42 * mound(t) / mMax + 0.08 * Math.sin(t * f2 * 6.28 + p2);
+      // ends curl down over the corners instead of stopping flat
+      const corner = k.drape * (Math.exp(-Math.pow(x / (k.ov + 3), 2)) + Math.exp(-Math.pow((W - x) / (k.ov + 3), 2)));
+      top.push([x, E - cap.amount * k.depth * e * n + corner]);
+      let lip = k.lip * Math.sqrt(e) * (0.55 + 0.45 * Math.sin(t * f1 * 4.1 + p3)) * (0.5 + cap.amount * 0.5) + corner;
+      for (const d of drips) lip += d.l * cap.amount * Math.exp(-Math.pow((x - d.x) / d.w, 2));
+      bot.push([x, E + Math.max(0, lip)]);
+    }
+    top[0][1] = bot[0][1]; top[top.length - 1][1] = bot[bot.length - 1][1];
+    top[0][0] = bot[0][0] = 0.5; top[top.length - 1][0] = bot[bot.length - 1][0] = W - 0.5;
+    const rev = bot.slice().reverse();
+    const body = 'M' + top[0].join(',') + curve(top) + ' L' + rev[0].join(',') + curve(rev) + 'Z';
+    const under = 'M0,' + (E - 1.5) + ' L' + W + ',' + (E - 1.5) + ' L' + rev[0].join(',') + curve(rev) + 'Z';
+    const shadowPts = bot.map(([x, y]) => [x, y + 1.2 * env(x / W)]).reverse();
+    const shadow = 'M' + top[0].join(',') + curve(top) + ' L' + shadowPts[0].join(',') + curve(shadowPts) + 'Z';
+    const rim = 'M' + top[0].join(',') + curve(top);
+
+    cap.svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    cap.svg.setAttribute('width', W); cap.svg.setAttribute('height', H);
+    cap.svg.style.left = (-k.ov) + 'px'; cap.svg.style.top = (-E) + 'px';
+    cap.svg.innerHTML =
+      (cap.kind === 'bank' ? '' : '<path d="' + shadow + '" fill="#0f1a2b" opacity=".09"/>') +
+      '<path d="' + body + '" fill="url(#w-snow-body)"/>' +
+      '<path d="' + under + '" fill="url(#w-snow-under)" opacity=".75"/>' +
+      '<path d="' + rim + '" fill="none" stroke="#a7b7ca" stroke-opacity=".38" stroke-width=".6"/>';
+    cap.E = E;
+  }
+
+  const targets = [
+    ...[...document.querySelectorAll('.btn-primary')].map(el => [el, 'button']),
+    ...[...document.querySelectorAll('.card')].map(el => [el, 'card']),
+    ...[...document.querySelectorAll('#besuch, body > footer:not(.legal-foot)')].map(el => [el, 'bank'])
+  ];
+  const caps = targets.map(([el, kind], i) => {
+    const svg = document.createElementNS(SVGNS, 'svg');
+    svg.setAttribute('class', 'snow-cap snow-cap--' + kind);
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    el.insertBefore(svg, el.firstChild);
+    const cap = { el, svg, kind, seed: 7 + i * 131, amount: 1, w: 0 };
+    drawSnow(cap);
+    cap.w = el.offsetWidth;
+    return cap;
   });
+  if ('ResizeObserver' in window) {
+    const ro = new ResizeObserver(() => caps.forEach(c => {
+      if (c.el.offsetWidth !== c.w) { c.w = c.el.offsetWidth; drawSnow(c); }
+    }));
+    caps.forEach(c => ro.observe(c.el));
+  }
+
   // Weak hardware gets a light snowfall (few flakes, 30 fps, no shedding);
   // reduced-motion gets none. It also bails out by itself if frames get slow.
   const weak = params.get('snow') !== 'on' &&
@@ -160,37 +266,54 @@
   })();
 
   // ── Snow slides off the caps while scrolling ──────────────────────────────
+  // A jolt knocks a little snow off the ends and the lip: a couple of clumps
+  // that drop, plus fine powder that drifts. The cap visibly thins and slowly
+  // builds back up while it keeps snowing.
   const bits = [];
-  const lastShed = new WeakMap();
-  let lastY = window.scrollY, ticking = false;
+  const shedCaps = caps.filter(c => c.kind !== 'bank');
+  let lastY = window.scrollY, ticking = false, lastShed = 0;
   function shed() {
     ticking = false;
     if (weak) return;
-    const y = window.scrollY, dy = Math.abs(y - lastY);
+    const y = window.scrollY, dy = y - lastY;
     lastY = y;
-    if (dy < 4) return;
     const t = performance.now();
-    for (const c of caps) {
-      if (Math.random() > Math.min(0.5, dy / 80)) continue;
-      const r = c.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > h || !r.width) continue;
-      if (t - (lastShed.get(c) || 0) < 900) continue;
-      lastShed.set(c, t);
-      c.classList.remove('shed'); void c.offsetWidth; c.classList.add('shed');
-      const n = c.classList.contains('snow-cap--big') ? 7 : 4;
-      for (let i = 0; i < n && bits.length < 60; i++) {
-        bits.push({
-          x: r.left + Math.random() * r.width, y: r.top + 2,
-          vx: (Math.random() - .5) * .8, vy: .2 + Math.random() * .6,
-          r: 1.6 + Math.random() * 2.2, a: .95
-        });
-      }
-      break;                                          // at most one cap per frame
+    if (Math.abs(dy) < 6 || t - lastShed < 220) return;
+    const vis = shedCaps.filter(c => {
+      if (c.amount < 0.4) return false;
+      const r = c.svg.getBoundingClientRect();
+      return r.bottom > 40 && r.top < h - 20;
+    });
+    if (!vis.length || Math.random() > Math.min(0.85, Math.abs(dy) / 60)) return;
+    lastShed = t;
+    const c = vis[Math.floor(Math.random() * vis.length)];
+    const r = c.el.getBoundingClientRect();
+    const k = KINDS[c.kind], big = c.kind === 'card';
+    const side = Math.random() < 0.65;                        // most of it slides off an end
+    const fromLeft = Math.random() < 0.5;
+    const ox = side ? (fromLeft ? r.left - k.ov + 2 + Math.random() * 6 : r.right + k.ov - 2 - Math.random() * 6)
+                    : r.left + (0.15 + Math.random() * 0.7) * r.width;
+    const oy = r.top + (side ? -1 : 2);
+    const push = side ? (fromLeft ? -1 : 1) : (Math.random() - 0.5);
+    const clumps = big ? 2 + (Math.random() * 2 | 0) : 1 + (Math.random() * 2 | 0);
+    for (let i = 0; i < clumps && bits.length < 80; i++) {
+      bits.push({ x: ox + (Math.random() - .5) * 5, y: oy, vx: push * (.25 + Math.random() * .45), vy: Math.random() * .4,
+                  g: .1 + Math.random() * .04, r: (big ? 1.9 : 1.4) + Math.random() * 1.3, a: 1, fade: .008, lump: true });
     }
+    for (let i = 0, n = big ? 9 : 5; i < n && bits.length < 80; i++) {
+      bits.push({ x: ox + (Math.random() - .5) * 10, y: oy + Math.random() * 3, vx: push * Math.random() * .5 + (Math.random() - .5) * .5,
+                  vy: -.2 + Math.random() * .4, g: .015 + Math.random() * .02, r: .5 + Math.random() * .7, a: .9, fade: .012 + Math.random() * .01 });
+    }
+    c.amount = Math.max(0.35, c.amount - (big ? 0.12 : 0.2));
+    drawSnow(c);
   }
   window.addEventListener('scroll', () => {
     if (!ticking) { ticking = true; requestAnimationFrame(shed); }
   }, { passive: true });
+  if (!weak) setInterval(() => {                              // snow settles back on
+    if (document.hidden) return;
+    for (const c of shedCaps) if (c.amount < 1) { c.amount = Math.min(1, c.amount + 0.04); drawSnow(c); }
+  }, 2500);
 
   let lastT = 0, slow = 0, nF = 0;
   function tick(now) {
@@ -212,10 +335,11 @@
     }
     for (let i = bits.length - 1; i >= 0; i--) {
       const b = bits[i];
-      b.vy += .12; b.x += b.vx; b.y += b.vy; b.a -= .014;
+      b.vy += b.g; b.vx *= .985; b.x += b.vx; b.y += b.vy; b.a -= b.fade;
       if (b.a <= 0 || b.y > h) { bits.splice(i, 1); continue; }
       ctx.globalAlpha = b.a;
       ctx.drawImage(sprite0, b.x - b.r * 2, b.y - b.r * 2, b.r * 4, b.r * 4);
+      if (b.lump) ctx.drawImage(sprite0, b.x + b.r * .6 - b.r * 1.5, b.y - b.r * .5 - b.r * 1.5, b.r * 3, b.r * 3);
     }
     ctx.globalAlpha = 1;
     raf = requestAnimationFrame(tick);
