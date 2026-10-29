@@ -100,7 +100,8 @@ html[data-theme="winter"] section:not(#hero) h2::before {
   content: "✦"; display: block; font-size: .9rem; color: var(--gold);
   letter-spacing: 0; margin-bottom: .9rem; opacity: .9;
 }
-html[data-theme="winter"] .container.narrow h2::before { content: none; }
+html[data-theme="winter"] .container.narrow h2::before,
+html[data-theme="winter"] .creator-section h2::before { content: none; }
 
 /* Snowfall canvas (created by winter.js) */
 #winter-snow {
