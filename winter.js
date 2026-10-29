@@ -47,11 +47,15 @@
     if (SYMS[id]) u.setAttribute('href', '#w-' + id.slice(2));
   });
 
-  // ── Festive wording ────────────────────────────────────────────────────────
-  const since = document.querySelector('.hero-since');
-  if (since) since.insertAdjacentHTML('afterend', '<p class="winter-greet">Frohe Festtage &amp; eine besinnliche Adventszeit</p>');
-  const flogo = document.querySelector('.footer-logo');
-  if (flogo) flogo.insertAdjacentHTML('afterend', '<p class="winter-greet winter-greet--foot">Frohe Weihnachten &amp; ein gutes neues Jahr</p>');
+  // ── Festive wording: only the week before Christmas (18–26 Dec) ────────────
+  // ?greet=on forces it for previewing.
+  const christmasWeek = m === 11 && d >= 18 && d <= 26;
+  if (christmasWeek || params.get('greet') === 'on') {
+    const since = document.querySelector('.hero-since');
+    if (since) since.insertAdjacentHTML('afterend', '<p class="winter-greet">Frohe Weihnachten &amp; eine besinnliche Adventszeit</p>');
+    const flogo = document.querySelector('.footer-logo');
+    if (flogo) flogo.insertAdjacentHTML('afterend', '<p class="winter-greet winter-greet--foot">Frohe Weihnachten &amp; ein gutes neues Jahr</p>');
+  }
 
   // ── Fairy-light garland under the nav: warm white + champagne only ─────────
   const TONES = ['#f6dfa6', '#ffffff', '#e9c981', '#fff3d1'];
