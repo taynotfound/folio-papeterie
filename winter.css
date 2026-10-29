@@ -183,3 +183,39 @@ html[data-theme="winter"] .nav-cta { position: relative; }
 
 /* Cheaper compositing on weak machines */
 @media (max-width: 860px) { #winter-lights { height: 34px; } }
+
+/* ── Snow caps (spans created by winter.js) ─────────────────────────────────── */
+html[data-theme="winter"] .btn-primary,
+html[data-theme="winter"] .nav-cta,
+html[data-theme="winter"] .map-consent-btn,
+html[data-theme="winter"] .card { position: relative; }
+
+.snow-cap {
+  position: absolute; left: -2px; right: -2px; top: -7px; height: 11px;
+  pointer-events: none; z-index: 4; transform-origin: bottom center;
+  border-radius: 6px 6px 2px 2px;
+  filter: drop-shadow(0 1px 1px rgba(70,100,140,.45));
+  background:
+    radial-gradient(circle at 12% 100%, #fff 4px, transparent 4.6px),
+    radial-gradient(circle at 36% 100%, #fff 6.5px, transparent 7px),
+    radial-gradient(circle at 63% 100%, #fff 4.5px, transparent 5px),
+    radial-gradient(circle at 88% 100%, #fff 5.5px, transparent 6px),
+    linear-gradient(#fff, #e9f0f8) bottom / 100% 4px no-repeat;
+}
+/* cards */
+.snow-cap--big { left: -5px; right: -5px; top: -12px; height: 18px; border-radius: 8px 8px 2px 2px;
+  background:
+    radial-gradient(circle at 8%  100%, #fff 7px, transparent 7.6px),
+    radial-gradient(circle at 26% 100%, #fff 11px, transparent 11.6px),
+    radial-gradient(circle at 47% 100%, #fff 7px, transparent 7.6px),
+    radial-gradient(circle at 66% 100%, #fff 10px, transparent 10.6px),
+    radial-gradient(circle at 87% 100%, #fff 8px, transparent 8.6px),
+    linear-gradient(#fff, #e9f0f8) bottom / 100% 6px no-repeat;
+}
+.snow-cap.shed { animation: snow-shed .5s ease-out; }
+@keyframes snow-shed {
+  0%   { transform: scaleY(1); }
+  30%  { transform: scaleY(.55) translateY(1px); }
+  100% { transform: scaleY(1); }
+}
+@media (prefers-reduced-motion: reduce) { .snow-cap.shed { animation: none; } }

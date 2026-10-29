@@ -100,6 +100,15 @@
     clearTimeout(rt); rt = setTimeout(buildGarland, 150);
   }, { passive: true });
 
+  // ── Snow caps on buttons, cards and prints (static, cheap) ─────────────────
+  const capped = [...document.querySelectorAll('.btn-primary, .nav-cta, .map-consent-btn, .card')];
+  const caps = capped.map(el => {
+    const c = document.createElement('span');
+    c.className = 'snow-cap' + (el.matches('.card') ? ' snow-cap--big' : '');
+    c.setAttribute('aria-hidden', 'true');
+    el.insertBefore(c, el.firstChild);
+    return c;
+  });
   // Respect reduced-motion and weak hardware: keep the lights, skip the snowfall.
   const weak = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4;
   if (params.get('snow') !== 'on' && (weak || window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
@@ -148,6 +157,38 @@
     c.fillStyle = g; c.fillRect(0, 0, SPR, SPR);
   })();
 
+  // ── Snow slides off the caps while scrolling ──────────────────────────────
+  const bits = [];
+  const lastShed = new WeakMap();
+  let lastY = window.scrollY, ticking = false;
+  function shed() {
+    ticking = false;
+    const y = window.scrollY, dy = Math.abs(y - lastY);
+    lastY = y;
+    if (dy < 4) return;
+    const t = performance.now();
+    for (const c of caps) {
+      if (Math.random() > Math.min(0.5, dy / 80)) continue;
+      const r = c.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > h || !r.width) continue;
+      if (t - (lastShed.get(c) || 0) < 900) continue;
+      lastShed.set(c, t);
+      c.classList.remove('shed'); void c.offsetWidth; c.classList.add('shed');
+      const n = c.classList.contains('snow-cap--big') ? 7 : 4;
+      for (let i = 0; i < n && bits.length < 60; i++) {
+        bits.push({
+          x: r.left + Math.random() * r.width, y: r.top + 2,
+          vx: (Math.random() - .5) * .8, vy: .2 + Math.random() * .6,
+          r: 1.6 + Math.random() * 2.2, a: .95
+        });
+      }
+      break;                                          // at most one cap per frame
+    }
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(shed); }
+  }, { passive: true });
+
   function tick() {
     ctx.clearRect(0, 0, w, h);
     for (const f of flakes) {
@@ -159,6 +200,14 @@
       ctx.globalAlpha = f.a;
       ctx.drawImage(sprite0, f.x - f.r * 2, f.y - f.r * 2, f.r * 4, f.r * 4);
     }
+    for (let i = bits.length - 1; i >= 0; i--) {
+      const b = bits[i];
+      b.vy += .12; b.x += b.vx; b.y += b.vy; b.a -= .014;
+      if (b.a <= 0 || b.y > h) { bits.splice(i, 1); continue; }
+      ctx.globalAlpha = b.a;
+      ctx.drawImage(sprite0, b.x - b.r * 2, b.y - b.r * 2, b.r * 4, b.r * 4);
+    }
+    ctx.globalAlpha = 1;
     raf = requestAnimationFrame(tick);
   }
 
