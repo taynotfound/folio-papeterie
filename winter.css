@@ -1,64 +1,106 @@
-/* ── Snowy Winter theme ──────────────────────────────────────────────────────
+/* ── Winter theme · "Winterlicher Salon" ─────────────────────────────────────
    Opt-in seasonal layer. Active only when <html data-theme="winter"> is set
-   (winter.js does this automatically 1 Dec – 6 Jan, or via ?theme=winter).
-   Everything is scoped, so removing the <link> restores the normal look.
+   (winter.js does this automatically 29 Oct – 6 Jan, or via ?theme=winter).
+   Palette: ivory paper, deep midnight navy, champagne gold, a single
+   burgundy accent. Everything is scoped; removing the <link> restores the
+   normal look.
    ─────────────────────────────────────────────────────────────────────────── */
 
 html[data-theme="winter"] {
-  --cream:    #f3f7fb;   /* fresh snow */
-  --parchment:#e2ebf4;   /* frosted blue-white */
-  --ink:      #14202e;   /* midnight */
-  --ink-soft: #2b3b4d;
-  --muted:    #5a6b7d;
-  --red:      #b3263a;   /* cranberry */
-  --green:    #2f6b4f;   /* fir */
-  --gold:     #c9a24a;   /* candle gold */
-  --border:   rgba(20,32,46,.12);
+  --cream:    #f4f1ea;   /* ivory */
+  --parchment:#e9e6df;   /* frosted linen */
+  --ink:      #0f1a2b;   /* midnight navy */
+  --ink-soft: #2a374b;
+  --muted:    #67717f;
+  --red:      #7d1f33;   /* burgundy */
+  --green:    #26433a;   /* deep fir */
+  --gold:     #b08d4c;   /* champagne gold */
+  --border:   rgba(15,26,43,.13);
   --snow:     #ffffff;
+  --navy-2:   #16243a;
 }
 
-/* Nav */
-html[data-theme="winter"] #nav.scrolled { background: rgba(243,247,251,.95); }
+html[data-theme="winter"] body { background: var(--cream); }
 
-/* Hardcoded warm tints from style.css → cool equivalents */
-html[data-theme="winter"] .polaroid { background: #fbfdff; }
-html[data-theme="winter"] .polaroid figcaption { color: #3b4b5c; }
-html[data-theme="winter"] .info-block p,
-html[data-theme="winter"] .hours td { color: rgba(243,247,251,.82); }
-html[data-theme="winter"] .hours tr.closed td { color: rgba(243,247,251,.3); }
-html[data-theme="winter"] .footer-links a { color: rgba(243,247,251,.4); }
-html[data-theme="winter"] .footer-imp { color: rgba(243,247,251,.35); }
+/* Nav: frosted ivory, gold hairline */
+html[data-theme="winter"] #nav.scrolled {
+  background: rgba(244,241,234,.9);
+  box-shadow: 0 1px 0 rgba(176,141,76,.35);
+}
+html[data-theme="winter"] .nav-cta { background: var(--ink); color: var(--cream); }
+html[data-theme="winter"] .nav-cta:hover { background: var(--gold); color: var(--ink); }
 
-/* Hero: soft sky-to-snow gradient */
+/* Hero: moonlit ivory with a faint champagne glow */
 html[data-theme="winter"] #hero {
-  background: linear-gradient(180deg, #dbe8f4 0%, var(--cream) 62%);
-}
-html[data-theme="winter"] #hero h1 em { color: var(--red); }
-html[data-theme="winter"] .hero-since { color: var(--gold); }
-
-/* Snow drifts on top of the darker sections and the footer */
-html[data-theme="winter"] #besuch,
-html[data-theme="winter"] footer { position: relative; }
-html[data-theme="winter"] #besuch::before,
-html[data-theme="winter"] footer::before {
-  content: "";
-  position: absolute; left: 0; right: 0; top: -1px; height: 22px;
   background:
-    radial-gradient(circle at 12px 0, var(--snow) 11px, transparent 12px) 0 0 / 24px 22px repeat-x,
-    radial-gradient(circle at 30px 0, var(--snow) 14px, transparent 15px) 0 0 / 56px 22px repeat-x;
-  opacity: .96;
-  pointer-events: none;
+    radial-gradient(ellipse 60% 50% at 78% 38%, rgba(176,141,76,.14), transparent 70%),
+    linear-gradient(180deg, #e6e9ee 0%, var(--cream) 70%);
 }
-html[data-theme="winter"] #besuch::before { top: 0; }
-html[data-theme="winter"] #besuch > .container,
-html[data-theme="winter"] #besuch > * { position: relative; }
-html[data-theme="winter"] #besuch::before { z-index: 1; }
+html[data-theme="winter"] #hero h1 { font-weight: 300; letter-spacing: -.015em; }
+html[data-theme="winter"] #hero h1 em { color: var(--red); }
+html[data-theme="winter"] .hero-since {
+  font-family: var(--ff-serif); font-style: italic; font-size: 1.2rem;
+  letter-spacing: .14em; color: var(--gold);
+}
+html[data-theme="winter"] .btn-primary { background: var(--ink); }
+html[data-theme="winter"] .btn-primary:hover { background: var(--gold); color: var(--ink); }
+html[data-theme="winter"] .hero-link { color: var(--ink-soft); border-bottom-color: rgba(176,141,76,.5); }
+html[data-theme="winter"] .hero-link:hover { color: var(--gold); border-color: var(--gold); }
 
-/* Little holly/snowflake touches on labels and the logo */
-html[data-theme="winter"] .logo::after { content: " ❄"; font-size: .7em; color: #7fb3e0; }
-html[data-theme="winter"] .btn-primary:hover,
-html[data-theme="winter"] .nav-cta { background: var(--red); }
-html[data-theme="winter"] .nav-cta:hover { background: var(--green); }
+/* Polaroids → gallery-style framed prints with a gold keyline */
+html[data-theme="winter"] .polaroid {
+  background: #fbfaf6;
+  box-shadow: 0 18px 40px rgba(15,26,43,.28), 0 0 0 1px rgba(176,141,76,.35);
+}
+html[data-theme="winter"] .polaroid figcaption {
+  font-family: var(--ff-serif); font-style: italic; font-size: 1rem; color: var(--ink-soft);
+}
+
+/* Section labels: small caps instead of handwriting */
+html[data-theme="winter"] .label,
+html[data-theme="winter"] .brands,
+html[data-theme="winter"] .info-block h4 {
+  font-family: var(--ff-serif); font-style: italic; letter-spacing: .08em; color: var(--gold);
+}
+html[data-theme="winter"] .label { font-size: 1.15rem; }
+
+/* Cards: ivory with a gold keyline that appears on hover */
+html[data-theme="winter"] .card,
+html[data-theme="winter"] .sortiment-card { background: #faf8f3; }
+html[data-theme="winter"] .card::before { background: var(--gold); height: 2px; }
+html[data-theme="winter"] .card:hover { box-shadow: 0 18px 44px rgba(15,26,43,.1); border-color: var(--gold); }
+html[data-theme="winter"] .card-icon .ico { color: var(--gold); }
+
+html[data-theme="winter"] blockquote { background: transparent; border-left: 0; box-shadow: none; }
+html[data-theme="winter"] .gal-img,
+html[data-theme="winter"] .gal-item { background: #faf8f3; }
+
+/* Besuch + footer: midnight navy, ivory type, gold detail */
+html[data-theme="winter"] #besuch,
+html[data-theme="winter"] footer {
+  background: linear-gradient(180deg, var(--navy-2), var(--ink));
+  border-top: 1px solid rgba(176,141,76,.4);
+}
+html[data-theme="winter"] #besuch .label,
+html[data-theme="winter"] .info-block h4 { color: #d6b877; }
+html[data-theme="winter"] .info-block p,
+html[data-theme="winter"] .hours td { color: rgba(244,241,234,.82); }
+html[data-theme="winter"] .hours tr.closed td { color: rgba(244,241,234,.38); }
+html[data-theme="winter"] .footer-links a { color: rgba(244,241,234,.5); }
+html[data-theme="winter"] .footer-links a:hover { color: #d6b877; }
+html[data-theme="winter"] .footer-imp { color: rgba(244,241,234,.45); }
+html[data-theme="winter"] .footer-legal a { color: rgba(244,241,234,.55); border-color: rgba(244,241,234,.2); }
+html[data-theme="winter"] .footer-logo span { color: #d6b877; }
+html[data-theme="winter"] .map-embed { border-color: rgba(176,141,76,.4); }
+html[data-theme="winter"] .map-consent-btn { background: var(--gold); color: var(--ink); }
+html[data-theme="winter"] .map-consent-btn:hover { background: var(--cream); }
+
+/* Gold ornament above every section label's heading */
+html[data-theme="winter"] section:not(#hero) h2::before {
+  content: "✦"; display: block; font-size: .9rem; color: var(--gold);
+  letter-spacing: 0; margin-bottom: .9rem; opacity: .9;
+}
+html[data-theme="winter"] .container.narrow h2::before { content: none; }
 
 /* Snowfall canvas (created by winter.js) */
 #winter-snow {
@@ -66,76 +108,27 @@ html[data-theme="winter"] .nav-cta:hover { background: var(--green); }
   pointer-events: none; z-index: 150;
 }
 
-
-/* ── Fairy-light garland hanging under the nav (built by winter.js) ───────── */
+/* ── Fairy-light garland under the nav (built by winter.js) ────────────────── */
 #winter-lights {
-  position: absolute; left: 0; right: 0; top: 100%; height: 46px;
+  position: absolute; left: 0; right: 0; top: 100%; height: 40px;
   pointer-events: none; overflow: hidden; z-index: 1;
 }
 #winter-lights.is-fixed { position: fixed; top: 0; z-index: 200; }
-#winter-lights svg { position: absolute; left: 0; top: 0; width: 100%; height: 34px; }
-#winter-lights path { fill: none; stroke: #33445a; stroke-width: 1.3; opacity: .65; }
+#winter-lights svg { position: absolute; left: 0; top: 0; width: 100%; height: 30px; }
+#winter-lights path { fill: none; stroke: #b08d4c; stroke-width: 1; opacity: .7; }
 #winter-lights .bulb {
-  position: absolute; width: 9px; height: 13px; margin-left: -4.5px;
+  position: absolute; width: 5px; height: 8px; margin-left: -2.5px;
   border-radius: 50% 50% 50% 50% / 38% 38% 62% 62%;
-  background: var(--c); color: var(--c);
-  box-shadow: 0 0 7px 2px var(--c);
-  animation: winter-glow 2.8s ease-in-out infinite;
+  background: var(--c);
+  box-shadow: 0 0 8px 2px var(--c);
+  animation: winter-glow 3.6s ease-in-out infinite;
   animation-delay: var(--d, 0s);
 }
-#winter-lights .bulb::before {            /* socket */
-  content: ""; position: absolute; top: -4px; left: 50%;
-  width: 5px; height: 5px; margin-left: -2.5px;
-  background: #3a4756; border-radius: 1px;
-}
-#winter-lights .bulb::after {             /* little highlight */
-  content: ""; position: absolute; top: 3px; left: 2px;
-  width: 2px; height: 3px; border-radius: 50%; background: rgba(255,255,255,.7);
-}
 @keyframes winter-glow {
-  0%, 100% { opacity: .6;  box-shadow: 0 0 3px 0 var(--c); }
-  50%      { opacity: 1;   box-shadow: 0 0 14px 5px var(--c); }
-}
-
-/* ── Snow caps on cards, buttons and polaroids ─────────────────────────────── */
-html[data-theme="winter"] .card,
-html[data-theme="winter"] .polaroid,
-html[data-theme="winter"] .btn-primary,
-html[data-theme="winter"] .nav-cta,
-html[data-theme="winter"] .map-consent-btn { position: relative; }
-
-html[data-theme="winter"] .card::after,
-html[data-theme="winter"] .polaroid::after {
-  content: ""; position: absolute; left: -4px; right: -4px; top: -13px; height: 18px;
-  z-index: 3; pointer-events: none;
-  border-radius: 8px 8px 2px 2px;
-  background:
-    radial-gradient(circle at 9%  100%, #fff 9px,  transparent 9.7px),
-    radial-gradient(circle at 27% 100%, #fff 13px, transparent 13.7px),
-    radial-gradient(circle at 46% 100%, #fff 8px,  transparent 8.7px),
-    radial-gradient(circle at 64% 100%, #fff 12px, transparent 12.7px),
-    radial-gradient(circle at 85% 100%, #fff 9px,  transparent 9.7px),
-    linear-gradient(#fff, #fff) bottom / 100% 7px no-repeat;
-  filter: drop-shadow(0 1px 1px rgba(70,100,140,.3));
-}
-html[data-theme="winter"] .card:nth-child(even)::after { transform: scaleX(-1); }
-html[data-theme="winter"] .polaroid::after { top: -10px; height: 14px; left: 8px; right: 8px; transform: scale(.8); transform-origin: bottom; }
-
-html[data-theme="winter"] .btn-primary::after,
-html[data-theme="winter"] .nav-cta::after,
-html[data-theme="winter"] .map-consent-btn::after {
-  content: ""; position: absolute; left: -2px; right: -2px; top: -8px; height: 12px;
-  pointer-events: none;
-  border-radius: 6px 6px 1px 1px;
-  background:
-    radial-gradient(circle at 14% 100%, #fff 5px, transparent 5.6px),
-    radial-gradient(circle at 40% 100%, #fff 8px, transparent 8.6px),
-    radial-gradient(circle at 68% 100%, #fff 5px, transparent 5.6px),
-    radial-gradient(circle at 90% 100%, #fff 6px, transparent 6.6px),
-    linear-gradient(#fff, #fff) bottom / 100% 4px no-repeat;
-  filter: drop-shadow(0 1px 1px rgba(70,100,140,.3));
+  0%, 100% { opacity: .55; box-shadow: 0 0 4px 1px var(--c); }
+  50%      { opacity: 1;   box-shadow: 0 0 12px 4px var(--c); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #winter-lights .bulb { animation: none; opacity: 1; box-shadow: 0 0 8px 2px var(--c); }
+  #winter-lights .bulb { animation: none; opacity: 1; }
 }

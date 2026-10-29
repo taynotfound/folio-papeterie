@@ -93,13 +93,14 @@
   <!-- NAV -->
   <nav id="nav">
     <div class="nav-inner">
-      <a href="#" class="logo"><img src="logo.png" alt="folio Papeterie" style="height:36px;width:auto;vertical-align:middle"></a>
-      <ul class="nav-links">
+      <a href="#" class="logo"><img src="logo.png" alt="folio Papeterie"></a>
+      <ul class="nav-links" id="nav-links">
         <li><a href="#sortiment">Sortiment</a></li>
         <li><a href="#galerie">Galerie</a></li>
         <li><a href="#besuch">Besuch</a></li>
       </ul>
       <a href="#besuch" class="nav-cta"><svg class="ico" aria-hidden="true"><use href="#i-pin"/></svg> Besuchen</a>
+      <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
     </div>
   </nav>
 
@@ -125,7 +126,7 @@
   </section>
 
   <!-- SORTIMENT -->
-  <section id="sortiment" style="position:relative;overflow:hidden">
+  <section id="sortiment">
     <div class="container">
       <p class="label reveal"><svg class="ico" aria-hidden="true"><use href="#i-sparkles"/></svg> Unser Sortiment</p>
       <h2 class="reveal">Ausgesuchtes,<br>das bleibt.</h2>
@@ -171,10 +172,10 @@
   </section>
 
   <!-- GALERIE -->
-  <section id="galerie" style="position:relative;overflow:hidden;background:var(--cream)">
-    <div class="container" style="padding:4rem 2rem">
+  <section id="galerie">
+    <div class="container">
       <h2 class="section-title reveal">Einblicke</h2>
-      <div style="columns:3;column-gap:1rem" class="reveal" id="masonry">
+      <div class="masonry reveal" id="masonry">
         <img src="gallery1.jpg" class="gal-img" width="1100" height="828" alt="Ladengeschäft der folio Papeterie in Göttingen" loading="lazy">
         <img src="gallery2.jpg" class="gal-img" width="1100" height="828" alt="Auswahl feiner Schreibwaren" loading="lazy">
         <img src="gallery3.jpg" class="gal-img" width="1100" height="828" alt="Notizbücher und Journale" loading="lazy">
@@ -190,19 +191,18 @@
         <img src="gallery13.jpg" class="gal-img" width="1100" height="828" alt="Geschenkideen aus der Papeterie" loading="lazy">
         <img src="gallery14.jpg" class="gal-img" width="1100" height="828" alt="Detail aus dem Sortiment" loading="lazy">
       </div>
-      <div style="text-align:center;margin-top:1.5rem">
-      </div>
     </div>
-    <div id="lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;cursor:zoom-out;align-items:center;justify-content:center">
-      <button id="lb-prev" aria-label="Vorheriges Bild" style="background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;padding:1rem;position:absolute;left:1rem">&#8592;</button>
-      <img id="lb-img" alt="Galeriebild in Großansicht" style="max-width:80vw;max-height:90vh;object-fit:contain">
-      <span id="lb-count" style="position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.75);font-size:.85rem;letter-spacing:.15em"></span>
-      <button id="lb-next" aria-label="Nächstes Bild" style="background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;padding:1rem;position:absolute;right:1rem">&#8594;</button>
+    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Galerie" hidden>
+      <button id="lb-close" class="lb-btn lb-close" aria-label="Schließen">&times;</button>
+      <button id="lb-prev" class="lb-btn lb-prev" aria-label="Vorheriges Bild">&#8592;</button>
+      <img id="lb-img" alt="Galeriebild in Großansicht">
+      <span id="lb-count" class="lb-count"></span>
+      <button id="lb-next" class="lb-btn lb-next" aria-label="Nächstes Bild">&#8594;</button>
     </div>
   </section>
 
   <!-- BESUCH -->
-  <section id="besuch" style="position:relative;overflow:hidden">
+  <section id="besuch">
     <div class="container">
       <p class="label reveal"><svg class="ico" aria-hidden="true"><use href="#i-pin"/></svg> Uns besuchen</p>
       <h2 class="reveal">Mitten in Göttingen.</h2>
@@ -300,26 +300,40 @@
   <script>
     const lb = document.getElementById('lightbox');
     const lbImg = document.getElementById('lb-img');
-    const lbImgs = [...document.querySelectorAll('.gal-img')].map(i=>i.src);
-    let lbCur = 0;
+    const galImgs = [...document.querySelectorAll('.gal-img')];
+    const lbSrcs = galImgs.map(i => i.src);
+    let lbCur = 0, lbOpener = null;
     function lbGo(n) {
-      lbCur = (n + lbImgs.length) % lbImgs.length;
-      lbImg.src = lbImgs[lbCur];
-      document.getElementById('lb-count').textContent = (lbCur+1) + ' / ' + lbImgs.length;
-      if (lbCur === lbImgs.length - 1) lbImg.style.filter = 'sepia(.4)';
-      else lbImg.style.filter = '';
+      lbCur = (n + lbSrcs.length) % lbSrcs.length;
+      lbImg.src = lbSrcs[lbCur];
+      lbImg.alt = galImgs[lbCur].alt;
+      document.getElementById('lb-count').textContent = (lbCur + 1) + ' / ' + lbSrcs.length;
     }
-    document.querySelectorAll('.gal-img').forEach((img,i) => {
-      img.addEventListener('click', () => { lbGo(i); lb.style.display='flex'; });
+    function lbOpen(i) {
+      lbOpener = document.activeElement;
+      lbGo(i); lb.hidden = false;
+      document.body.style.overflow = 'hidden';
+      document.getElementById('lb-close').focus();
+    }
+    function lbClose() {
+      lb.hidden = true; document.body.style.overflow = '';
+      if (lbOpener) lbOpener.focus();
+    }
+    galImgs.forEach((img, i) => {
+      img.tabIndex = 0;
+      img.setAttribute('role', 'button');
+      img.addEventListener('click', () => lbOpen(i));
+      img.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); lbOpen(i); } });
     });
-    lb.addEventListener('click', e => { if(e.target===lb) lb.style.display='none'; });
-    document.getElementById('lb-prev').onclick = e => { e.stopPropagation(); lbGo(lbCur-1); };
-    document.getElementById('lb-next').onclick = e => { e.stopPropagation(); lbGo(lbCur+1); };
+    lb.addEventListener('click', e => { if (e.target === lb) lbClose(); });
+    document.getElementById('lb-close').onclick = lbClose;
+    document.getElementById('lb-prev').onclick = e => { e.stopPropagation(); lbGo(lbCur - 1); };
+    document.getElementById('lb-next').onclick = e => { e.stopPropagation(); lbGo(lbCur + 1); };
     document.addEventListener('keydown', e => {
-      if (lb.style.display !== 'flex') return;
-      if (e.key === 'ArrowRight') lbGo(lbCur+1);
-      if (e.key === 'ArrowLeft') lbGo(lbCur-1);
-      if (e.key === 'Escape') lb.style.display = 'none';
+      if (lb.hidden) return;
+      if (e.key === 'ArrowRight') lbGo(lbCur + 1);
+      if (e.key === 'ArrowLeft') lbGo(lbCur - 1);
+      if (e.key === 'Escape') lbClose();
     });
 
     // Map click-to-load: inject the OSM iframe only after explicit consent.
