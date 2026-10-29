@@ -109,9 +109,11 @@
     el.insertBefore(c, el.firstChild);
     return c;
   });
-  // Respect reduced-motion and weak hardware: keep the lights, skip the snowfall.
-  const weak = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4;
-  if (params.get('snow') !== 'on' && (weak || window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+  // Weak hardware gets a light snowfall (few flakes, 30 fps, no shedding);
+  // reduced-motion gets none. It also bails out by itself if frames get slow.
+  const weak = params.get('snow') !== 'on' &&
+    ((navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4);
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.classList.add('winter-calm');
     return;
   }
@@ -130,7 +132,7 @@
     canvas.width = w * dpr; canvas.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     // sparse and slow: a quiet flurry, not a blizzard
-    const target = Math.round(Math.min(36, Math.max(14, (w * h) / 50000)));
+    const target = weak ? 16 : Math.round(Math.min(36, Math.max(14, (w * h) / 50000)));
     while (flakes.length < target) flakes.push(makeFlake(true));
     flakes.length = Math.min(flakes.length, target);
   }
@@ -163,6 +165,7 @@
   let lastY = window.scrollY, ticking = false;
   function shed() {
     ticking = false;
+    if (weak) return;
     const y = window.scrollY, dy = Math.abs(y - lastY);
     lastY = y;
     if (dy < 4) return;
@@ -189,7 +192,14 @@
     if (!ticking) { ticking = true; requestAnimationFrame(shed); }
   }, { passive: true });
 
-  function tick() {
+  let lastT = 0, slow = 0, nF = 0;
+  function tick(now) {
+    if (weak && now - lastT < 33) { raf = requestAnimationFrame(tick); return; }   // ~30 fps
+    if (lastT) {                                      // give up quietly if the machine can't keep up
+      slow += (now - lastT > 70) ? 1 : -1; slow = Math.max(0, slow);
+      if (slow > 40) { canvas.remove(); raf = null; return; }
+    }
+    lastT = now;
     ctx.clearRect(0, 0, w, h);
     for (const f of flakes) {
       f.sway += f.swaySpeed;
