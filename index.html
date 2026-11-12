@@ -98,6 +98,7 @@
     <div class="nav-inner">
       <a href="#" class="logo"><img src="logo.png" alt="folio Papeterie"></a>
       <ul class="nav-links" id="nav-links">
+        <li class="nav-winter"><a href="#winterfenster">Winterfenster</a></li>
         <li><a href="#sortiment">Sortiment</a></li>
         <li><a href="#galerie">Galerie</a></li>
         <li><a href="#besuch">Besuch</a></li>
@@ -126,6 +127,33 @@
       </div>
     </div>
     <div class="scroll-hint"><span></span></div>
+  </section>
+
+  <!-- WINTERFENSTER (seasonal: shown only while winter.js sets data-theme="winter") -->
+  <section id="winterfenster" class="winterfenster" aria-labelledby="wf-title">
+    <div class="container">
+      <header class="wf-head">
+        <div>
+          <p class="label"><svg class="ico" aria-hidden="true"><use href="#i-sparkles"/></svg> Jetzt bei uns</p>
+          <h2 id="wf-title">Der Winter ist eingezogen.</h2>
+        </div>
+        <p class="wf-intro">Tür und Schaufenster sind geschmückt, bis ins neue Jahr: ein Adventskalender aus Papierhäusern, Eulen und Sterne aus Papier, dazu Notizbücher, Kalender und Geschenkpapier. Am schönsten ist es natürlich vor Ort.</p>
+      </header>
+      <div class="wf-grid">
+        <figure class="wf-fig wf-fig--door">
+          <div class="wf-frame">
+            <img src="winter-door-1400.jpg" srcset="winter-door-800.jpg 597w, winter-door-1400.jpg 1045w" sizes="(max-width: 700px) 92vw, 400px" width="1045" height="1400" class="wf-img" loading="lazy" decoding="async" alt="Weiße Ladentür der folio Papeterie, im Fenster ein Adventskalender aus Papierhäusern mit den Zahlen 1 bis 24, links und rechts Kartenständer voller Grußkarten">
+          </div>
+          <figcaption><span class="wf-num">I</span> <strong>Die Ladentür</strong> Ein Adventskalender aus Papierhäusern, links und rechts Karten zum Stöbern.</figcaption>
+        </figure>
+        <figure class="wf-fig wf-fig--window">
+          <div class="wf-frame">
+            <img src="winter-window-1400.jpg" srcset="winter-window-800.jpg 800w, winter-window-1400.jpg 1400w" sizes="(max-width: 700px) 92vw, 700px" width="1400" height="1054" class="wf-img" loading="lazy" decoding="async" alt="Winterlich dekoriertes Schaufenster: Eulen, Sterne, Herzen und Glücksklee aus Papier an Fäden, ein weißer Zweigbaum mit Anhängern, Notizbücher, Taschen, Geschenkschachteln und eine kleine Adventskette aus Papierhäusern">
+          </div>
+          <figcaption><span class="wf-num">II</span> <strong>Das Schaufenster</strong> Eulen, Sterne und Glücksklee aus Papier, dazu Notizbücher, Taschen und Geschenkpapier.</figcaption>
+        </figure>
+      </div>
+    </div>
   </section>
 
   <!-- SORTIMENT -->
@@ -308,18 +336,21 @@
   <script>
     const lb = document.getElementById('lightbox');
     const lbImg = document.getElementById('lb-img');
-    const galImgs = [...document.querySelectorAll('.gal-img')];
-    const lbSrcs = galImgs.map(i => i.src);
+    // Winter photos (.wf-img) join the lightbox only while they are visible.
+    const allImgs = [...document.querySelectorAll('.wf-img, .gal-img')];
+    let galImgs = allImgs;
     let lbCur = 0, lbOpener = null;
     function lbGo(n) {
-      lbCur = (n + lbSrcs.length) % lbSrcs.length;
-      lbImg.src = lbSrcs[lbCur];
-      lbImg.alt = galImgs[lbCur].alt;
-      document.getElementById('lb-count').textContent = (lbCur + 1) + ' / ' + lbSrcs.length;
+      lbCur = (n + galImgs.length) % galImgs.length;
+      const im = galImgs[lbCur];
+      lbImg.src = im.srcset ? im.srcset.split(',').pop().trim().split(' ')[0] : im.src;   // largest candidate
+      lbImg.alt = im.alt;
+      document.getElementById('lb-count').textContent = (lbCur + 1) + ' / ' + galImgs.length;
     }
-    function lbOpen(i) {
+    function lbOpen(img) {
+      galImgs = allImgs.filter(i => i.offsetParent !== null);
       lbOpener = document.activeElement;
-      lbGo(i); lb.hidden = false;
+      lbGo(galImgs.indexOf(img)); lb.hidden = false;
       document.body.style.overflow = 'hidden';
       document.getElementById('lb-close').focus();
     }
@@ -327,11 +358,11 @@
       lb.hidden = true; document.body.style.overflow = '';
       if (lbOpener) lbOpener.focus();
     }
-    galImgs.forEach((img, i) => {
+    allImgs.forEach(img => {
       img.tabIndex = 0;
       img.setAttribute('role', 'button');
-      img.addEventListener('click', () => lbOpen(i));
-      img.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); lbOpen(i); } });
+      img.addEventListener('click', () => lbOpen(img));
+      img.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); lbOpen(img); } });
     });
     lb.addEventListener('click', e => { if (e.target === lb) lbClose(); });
     document.getElementById('lb-close').onclick = lbClose;
