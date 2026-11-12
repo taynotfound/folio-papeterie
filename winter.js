@@ -47,6 +47,13 @@
     if (SYMS[id]) u.setAttribute('href', '#w-' + id.slice(2));
   });
 
+  // ── Point the hero's secondary link at the decorated door & window ────────
+  const heroLink = document.querySelector('.hero-link[href="#galerie"]');
+  if (heroLink && document.getElementById('winterfenster')) {
+    heroLink.setAttribute('href', '#winterfenster');
+    heroLink.firstChild.textContent = 'Zum Winterfenster ';
+  }
+
   // ── Festive wording: only the week before Christmas (18–26 Dec) ────────────
   // ?greet=on forces it for previewing.
   const christmasWeek = m === 11 && d >= 18 && d <= 26;
@@ -194,7 +201,7 @@
 
   const targets = [
     ...[...document.querySelectorAll('.btn-primary')].map(el => [el, 'button']),
-    ...[...document.querySelectorAll('.card')].map(el => [el, 'card']),
+    ...[...document.querySelectorAll('.card, .wf-frame')].map(el => [el, 'card']),
     ...[...document.querySelectorAll('#besuch, body > footer:not(.legal-foot)')].map(el => [el, 'bank'])
   ];
   const caps = targets.map(([el, kind], i) => {

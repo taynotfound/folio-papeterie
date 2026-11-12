@@ -210,3 +210,80 @@ html[data-theme="winter"] .legal-foot .footer-logo span { color: var(--gold); }
 html[data-theme="winter"] .legal-foot .footer-legal a { color: var(--muted); border-color: var(--border); }
 html[data-theme="winter"] .legal-foot::after, html[data-theme="winter"] footer.legal-foot::before { content: none; }
 html[data-theme="winter"] .legal-foot .winter-greet--foot { color: var(--red); }
+
+/* ── Winterfenster: the real door & shop window, uncropped ─────────────────────
+   The layout is cut to the photos, not the other way round: the two columns
+   are sized in the images' own proportions (door 1045×1400, window 1400×1054
+   → 1045fr : 1860fr), so both prints end at exactly the same height with no
+   cropping at any width. The fir-green ground is the felt from the window
+   display; ivory and gold pick up the door frame and the paper stars. */
+.winterfenster, .nav-winter { display: none; }
+html[data-theme="winter"] .nav-winter { display: list-item; }
+html[data-theme="winter"] .nav-winter a { color: var(--red); }
+html[data-theme="winter"] .winterfenster {
+  display: block; position: relative; overflow: visible;
+  padding: 6rem 0 6.5rem;
+  color: #f4f1ea;
+  background:
+    radial-gradient(ellipse 55% 45% at 72% 30%, rgba(233,201,129,.13), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 10% 90%, rgba(125,31,51,.18), transparent 70%),
+    linear-gradient(180deg, #223d34 0%, #1a3029 100%);
+  border-top: 1px solid rgba(176,141,76,.45);
+}
+html[data-theme="winter"] #hero + .winterfenster::before { display: none; }
+
+.wf-head {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.5rem 4rem; align-items: end; margin-bottom: 3rem;
+}
+html[data-theme="winter"] .winterfenster .label { color: #d6b877; }
+html[data-theme="winter"] .winterfenster .ico { color: #d6b877; }
+.winterfenster h2 { color: #f4f1ea; margin-bottom: 0; }
+html[data-theme="winter"] .winterfenster h2::before { color: #d6b877; }
+.wf-intro {
+  color: rgba(244,241,234,.78); max-width: 46ch; line-height: 1.75;
+  padding-bottom: .35rem;
+}
+
+.wf-grid {
+  display: grid; align-items: start;
+  grid-template-columns: minmax(0, 1045fr) minmax(0, 1860fr);
+  gap: clamp(1.25rem, 2.6vw, 2.25rem);
+}
+.wf-fig { margin: 0; }
+.wf-frame { position: relative; }
+.wf-img {
+  display: block; width: 100%; height: auto; cursor: zoom-in;
+  border-radius: 2px; background: #2b4a40;
+  box-shadow: 0 0 0 1px rgba(214,184,119,.45), 0 26px 50px -18px rgba(0,0,0,.6), 0 8px 18px -10px rgba(0,0,0,.4);
+  transition: transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s;
+}
+.wf-img:hover { transform: translateY(-3px); box-shadow: 0 0 0 1px rgba(214,184,119,.8), 0 34px 60px -18px rgba(0,0,0,.65), 0 8px 18px -10px rgba(0,0,0,.4); }
+.wf-fig figcaption {
+  margin-top: 1.15rem; padding-top: .9rem; border-top: 1px solid rgba(214,184,119,.3);
+  font-size: .92rem; line-height: 1.6; color: rgba(244,241,234,.7);
+}
+.wf-fig figcaption strong {
+  display: block; font-family: var(--ff-serif); font-size: 1.35rem; font-weight: 500;
+  color: #f4f1ea; letter-spacing: .01em; margin-bottom: .1rem;
+}
+.wf-num {
+  float: right; font-family: var(--ff-serif); font-style: italic; font-size: 1.1rem;
+  color: #d6b877; line-height: 1.9; margin-left: 1rem;
+}
+
+/* Snow caps sit on the frames (drawn by winter.js) */
+.wf-frame .snow-cap { z-index: 2; }
+
+@media (max-width: 860px) {
+  html[data-theme="winter"] .winterfenster { padding: 4.5rem 0 5rem; }
+  .wf-head { grid-template-columns: 1fr; margin-bottom: 2.25rem; }
+  .wf-head h2 { margin-bottom: 0; }
+}
+/* Phones: stack, window first (it reads at a glance), door below */
+@media (max-width: 700px) {
+  .wf-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .wf-fig--window { order: -1; }
+  .wf-fig--door .wf-frame { max-width: 88%; margin: 0 auto; }
+}
+@media (prefers-reduced-motion: reduce) { .wf-img, .wf-img:hover { transition: none; transform: none; } }
